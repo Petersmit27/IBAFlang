@@ -1,0 +1,47 @@
+Language "IBAFlang"
+    
+Syntax START:start ::= exp
+    
+Semantics start[[ _:start ]] : =>values
+
+Rule start[[ E ]] =
+  initialise-binding finalise-failing eval[[ E ]]
+    
+Syntax E:exp ::= int
+               | id
+               | 'lambda' id '.' exp
+               | exp '(' exp ')'
+               | 'let' id '=' exp 'in' exp
+               | '(' exp ')'
+    
+Semantics eval[[ _:exp ]] : => values
+    
+Rule eval[[ N ]] = int[[ N ]]
+    
+Rule eval[[ X ]] = bound id[[ X ]]
+    
+Rule eval[[ 'lambda' X '.' E ]] =
+  function closure
+    scope( bind( id[[ X ]], given ), 
+           eval[[ E ]] )
+    
+Rule eval[[ E1 '(' E2 ')' ]] =
+  apply( eval[[ E1 ]], eval[[ E2 ]] )
+    
+Rule eval[[ 'let' X '=' E1 'in' E2 ]] =
+    scope( bind( id[[ X ]], eval[[ E1 ]] ), 
+           eval[[ E2 ]] )
+    
+Rule eval[[ '(' E ')' ]] = eval[[ E ]]
+    
+    
+Lexis  N:int ::= ('0'-'9')+
+    
+Semantics int[[ N:int ]] : => integers
+            = decimal \"N\"
+    
+    
+Lexis  X:id  ::= ('a'-'z') ('a'-'z'|'0'-'9')*
+    
+Semantics id[[ X:id ]] : => identifiers
+            = \"X\"

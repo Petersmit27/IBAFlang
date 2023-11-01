@@ -1,0 +1,15 @@
+module Main
+
+imports
+  Menus
+  Syntax
+  Analysis
+  Refactoring
+
+language
+
+  extensions : iba
+
+// Add this provider when switching Stratego to interpreted mode:
+//  provider : target/metaborg/stratego.ctree
+  provider : target/metaborg/stratego.jar

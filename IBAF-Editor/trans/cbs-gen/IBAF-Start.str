@@ -1,0 +1,53 @@
+module IBAF-Start
+
+imports
+  libstratego-gpp
+  signatures/-
+  pp/IBAF-parenthesize
+  pp/IBAF-pp
+
+imports
+  
+
+// Language "IBAFlang"
+
+rules
+to-funcons:
+  |[ start[: (:E:) :] ]| ->
+  |[ initialise-binding finalise-failing eval[: (:E:) :] ]|
+to-funcons:
+  |[ eval[: (:N:) :] ]| ->
+  |[ int[: (:N:) :] ]|
+to-funcons:
+  |[ eval[: (:X:) :] ]| ->
+  |[ bound id[: (:X:) :] ]|
+to-funcons:
+  |[ eval[: lambda(:X:).(:E:) :] ]| ->
+  |[ function closure scope (bind (id[: (:X:) :], 
+                                   given), 
+                           eval[: (:E:) :]) ]|
+to-funcons:
+  |[ eval[: (:E1:)((:E2:)) :] ]| ->
+  |[ apply (eval[: (:E1:) :], 
+             eval[: (:E2:) :]) ]|
+to-funcons:
+  |[ eval[: let(:X:)=(:E1:)in(:E2:) :] ]| ->
+  |[ scope (bind (id[: (:X:) :], 
+                     eval[: (:E1:) :]), 
+             eval[: (:E2:) :]) ]|
+to-funcons:
+  |[ eval[: ((:E:)) :] ]| ->
+  |[ eval[: (:E:) :] ]|
+to-funcons-lex: 
+  FCTDoubleQuoted(L-int(LEX-int(str))) -> 
+  FCTString(<double-quote> str)
+to-funcons:
+  |[ int[: (:N:) :] ]| ->
+  |[ decimal \"(:N:)\" ]|
+to-funcons-lex: 
+  FCTDoubleQuoted(L-id(LEX-id(str))) -> 
+  FCTString(<double-quote> str)
+to-funcons:
+  |[ id[: (:X:) :] ]| ->
+  |[ \"(:X:)\" ]|
+

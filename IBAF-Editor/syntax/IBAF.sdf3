@@ -1,0 +1,12 @@
+module IBAF
+
+imports
+    IBAF-Start
+
+context-free start-symbols
+  
+    Start
+
+context-free syntax
+  
+    Start = L-start
