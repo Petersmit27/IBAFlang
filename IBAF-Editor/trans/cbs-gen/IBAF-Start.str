@@ -13,41 +13,42 @@ imports
 
 rules
 to-funcons:
-  |[ start[: (:E:) :] ]| ->
-  |[ initialise-binding finalise-failing eval[: (:E:) :] ]|
+  |[ start[: (:AExp:) :] ]| ->
+  |[ initialise-binding finalise-failing eval-arith[: (:AExp:) :] ]|
+
+// #1 Arithmetic expressions
+              
+
 to-funcons:
-  |[ eval[: (:N:) :] ]| ->
-  |[ int[: (:N:) :] ]|
+  |[ eval-arith[: (:N:) :] ]| ->
+  |[ int-val[: (:N:) :] ]|
 to-funcons:
-  |[ eval[: (:X:) :] ]| ->
-  |[ bound id[: (:X:) :] ]|
+  |[ eval-arith[: (:I:) :] ]| ->
+  |[ assigned (bound (id[: (:I:) :])) ]|
 to-funcons:
-  |[ eval[: lambda(:X:).(:E:) :] ]| ->
-  |[ function closure scope (bind (id[: (:X:) :], 
-                                   given), 
-                           eval[: (:E:) :]) ]|
+  |[ eval-arith[: (:AExp1:)+(:AExp2:) :] ]| ->
+  |[ integer-add (eval-arith[: (:AExp1:) :], 
+             eval-arith[: (:AExp2:) :]) ]|
 to-funcons:
-  |[ eval[: (:E1:)((:E2:)) :] ]| ->
-  |[ apply (eval[: (:E1:) :], 
-             eval[: (:E2:) :]) ]|
+  |[ eval-arith[: (:AExp1:)/(:AExp2:) :] ]| ->
+  |[ checked integer-divide (eval-arith[: (:AExp1:) :], 
+                    eval-arith[: (:AExp2:) :]) ]|
 to-funcons:
-  |[ eval[: let(:X:)=(:E1:)in(:E2:) :] ]| ->
-  |[ scope (bind (id[: (:X:) :], 
-                     eval[: (:E1:) :]), 
-             eval[: (:E2:) :]) ]|
-to-funcons:
-  |[ eval[: ((:E:)) :] ]| ->
-  |[ eval[: (:E:) :] ]|
+  |[ eval-arith[: ((:AExp:)) :] ]| ->
+  |[ eval-arith[: (:AExp:) :] ]|
 to-funcons-lex: 
-  FCTDoubleQuoted(L-int(LEX-int(str))) -> 
+  FCTDoubleQuoted(L-decimal(LEX-decimal(str))) -> 
   FCTString(<double-quote> str)
 to-funcons:
-  |[ int[: (:N:) :] ]| ->
-  |[ decimal \"(:N:)\" ]|
+  |[ int-val[: (:D:) :] ]| ->
+  |[ decimal-natural (\"(:D:)\") ]|
+to-funcons:
+  |[ int-val[: -(:D:) :] ]| ->
+  |[ integer-negate (int-val[: (:D:) :]) ]|
 to-funcons-lex: 
   FCTDoubleQuoted(L-id(LEX-id(str))) -> 
   FCTString(<double-quote> str)
 to-funcons:
-  |[ id[: (:X:) :] ]| ->
-  |[ \"(:X:)\" ]|
+  |[ id[: (:I:) :] ]| ->
+  |[ \"(:I:)\" ]|
 

@@ -1,6 +1,9 @@
 module ibaf
 
 imports
+  generate
+
+imports
   libstratego-lib
 
 imports
@@ -16,6 +19,3 @@ rules // Debugging
     with
       filename := <guarantee-extension(|"aterm")> path
     ; result   := node
-
-imports
-  generate

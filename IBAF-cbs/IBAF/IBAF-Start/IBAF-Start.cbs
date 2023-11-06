@@ -1,47 +1,55 @@
 Language "IBAFlang"
     
-Syntax START:start ::= exp
+Syntax START:start ::= aexp
     
 Semantics start[[ _:start ]] : =>values
 
-Rule start[[ E ]] =
-  initialise-binding finalise-failing eval[[ E ]]
-    
-Syntax E:exp ::= int
-               | id
-               | 'lambda' id '.' exp
-               | exp '(' exp ')'
-               | 'let' id '=' exp 'in' exp
-               | '(' exp ')'
-    
-Semantics eval[[ _:exp ]] : => values
-    
-Rule eval[[ N ]] = int[[ N ]]
-    
-Rule eval[[ X ]] = bound id[[ X ]]
-    
-Rule eval[[ 'lambda' X '.' E ]] =
-  function closure
-    scope( bind( id[[ X ]], given ), 
-           eval[[ E ]] )
-    
-Rule eval[[ E1 '(' E2 ')' ]] =
-  apply( eval[[ E1 ]], eval[[ E2 ]] )
-    
-Rule eval[[ 'let' X '=' E1 'in' E2 ]] =
-    scope( bind( id[[ X ]], eval[[ E1 ]] ), 
-           eval[[ E2 ]] )
-    
-Rule eval[[ '(' E ')' ]] = eval[[ E ]]
-    
-    
-Lexis  N:int ::= ('0'-'9')+
-    
-Semantics int[[ N:int ]] : => integers
-            = decimal \"N\"
-    
-    
-Lexis  X:id  ::= ('a'-'z') ('a'-'z'|'0'-'9')*
-    
-Semantics id[[ X:id ]] : => identifiers
-            = \"X\"
+Rule start[[ AExp ]] = 
+	initialise-binding 
+	finalise-failing 
+	eval-arith[[ AExp ]]
+  
+
+#1 Arithmetic expressions
+
+
+Syntax 
+  AExp : aexp ::= num
+               |  id 
+               |  aexp '+' aexp 
+               |  aexp '/' aexp
+               |  '(' aexp ')'
+
+Semantics       
+  eval-arith[[ _:aexp ]] : =>integers
+Rule
+  eval-arith[[ N ]] = int-val[[ N ]]
+Rule
+  eval-arith[[ I ]] = assigned(bound(id[[ I ]]))
+Rule
+  eval-arith[[ AExp1 '+' AExp2 ]] = 
+    integer-add(eval-arith[[ AExp1 ]], eval-arith[[ AExp2 ]])
+Rule
+  eval-arith[[ AExp1 '/' AExp2 ]] = 
+    checked integer-divide(eval-arith[[ AExp1 ]], eval-arith[[ AExp2 ]])
+Rule
+  eval-arith[[ '(' AExp ')' ]] = eval-arith[[ AExp ]]
+
+Syntax
+  N : num ::= '-'?_decimal
+Lexis
+  D : decimal ::= ('0'-'9')+
+Semantics
+  int-val[[ _:num ]] : integers
+Rule
+  int-val[[ D ]] = decimal-natural(\"D\")
+Rule
+  int-val[[ '-' D ]] = integer-negate(int-val[[ D ]])
+
+Lexis
+  I : id ::= ('A'-'Z'|'a'-'z')+
+Semantics
+  id[[ _:id ]] : ids
+Rule
+  id[[ I ]] = \"I\"
+

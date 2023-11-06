@@ -7,66 +7,97 @@ imports
 // Language "IBAFlang"
     
 lexical syntax // Language
-  LEX-int = ( [0-9] )+
-  LEX-id = ( [a-z] ) ( [a-z] | [0-9] )*
+  
+  // #1 Arithmetic expressions
+                
+  
+  LEX-DASH = "-"
+  LEX-decimal = ( [0-9] )+
+  LEX-id = ( [A-Z] | [a-z] )+
   
 syntax // Language
   
+  // #1 Arithmetic expressions
+                
+  
+  
 context-free syntax // Language
-  L-start.L-start--L-exp =
-    L-exp
+  L-start.L-start--L-aexp =
+    L-aexp
   
-  L-exp.L-exp--L-int =
-    L-int
-  L-exp.L-exp--L-id =
+  
+  // #1 Arithmetic expressions
+                
+  
+  L-aexp.L-aexp--L-num =
+    L-num
+  L-aexp.L-aexp--L-id =
     L-id
-  L-exp.L-exp--R-lambda-L-id-DOT-L-exp =
-    "lambda" L-id "." L-exp
-  L-exp.L-exp--L-exp-LPAREN-L-exp-RPAREN =
-    L-exp "(" L-exp ")"
-  L-exp.L-exp--R-let-L-id-EQUALS-L-exp-R-in-L-exp =
-    "let" L-id "=" L-exp "in" L-exp
-  L-exp.L-exp--LPAREN-L-exp-RPAREN =
-    "(" L-exp ")"
+  L-aexp.L-aexp--L-aexp-PLUS-L-aexp =
+    L-aexp "+" L-aexp
+  L-aexp.L-aexp--L-aexp-SLASH-L-aexp =
+    L-aexp "/" L-aexp
+  L-aexp.L-aexp--LPAREN-L-aexp-RPAREN =
+    "(" L-aexp ")"
   
-  L-int.LEX-int = 
-    LEX-int
+  L-decimal.LEX-decimal = 
+    LEX-decimal
   L-id.LEX-id = 
     LEX-id
   
 context-free syntax // Semantics
   FCT.T-start =
     "start" "[:" L-start ":]"
-  FCT.T-eval =
-    "eval" "[:" L-exp ":]"
-  FCT-Quoted.L-int = L-int
-  FCT.T-int =
-    "int" "[:" L-int ":]"
+  
+  // #1 Arithmetic expressions
+                
+  
+  FCT.T-eval-arith =
+    "eval-arith" "[:" L-aexp ":]"
+  FCT-Quoted.L-decimal = L-decimal
+  FCT.T-int-val =
+    "int-val" "[:" L-num ":]"
   FCT-Quoted.L-id = L-id
   FCT.T-id =
     "id" "[:" L-id ":]"
   
 context-free syntax // Desugaring
   
+  // #1 Arithmetic expressions
+                
+  
+  
 variables // Meta-variables
   L-start = "(:START" [1-9]? ":)" {prefer}
   L-start? = "(:START" [1-9]? "?:)" {prefer}
   L-start* = "(:START" [1-9]? "*:)" {prefer}
   L-start+ = "(:START" [1-9]? "+:)" {prefer}
-  L-exp = "(:E" [1-9]? ":)" {prefer}
-  L-exp? = "(:E" [1-9]? "?:)" {prefer}
-  L-exp* = "(:E" [1-9]? "*:)" {prefer}
-  L-exp+ = "(:E" [1-9]? "+:)" {prefer}
-  L-int = "(:N" [1-9]? ":)" {prefer}
-  L-int? = "(:N" [1-9]? "?:)" {prefer}
-  L-int* = "(:N" [1-9]? "*:)" {prefer}
-  L-int+ = "(:N" [1-9]? "+:)" {prefer}
-  L-id = "(:X" [1-9]? ":)" {prefer}
-  L-id? = "(:X" [1-9]? "?:)" {prefer}
-  L-id* = "(:X" [1-9]? "*:)" {prefer}
-  L-id+ = "(:X" [1-9]? "+:)" {prefer}
+  
+  // #1 Arithmetic expressions
+                
+  
+  L-aexp = "(:AExp" [1-9]? ":)" {prefer}
+  L-aexp? = "(:AExp" [1-9]? "?:)" {prefer}
+  L-aexp* = "(:AExp" [1-9]? "*:)" {prefer}
+  L-aexp+ = "(:AExp" [1-9]? "+:)" {prefer}
+  L-num = "(:N" [1-9]? ":)" {prefer}
+  L-num? = "(:N" [1-9]? "?:)" {prefer}
+  L-num* = "(:N" [1-9]? "*:)" {prefer}
+  L-num+ = "(:N" [1-9]? "+:)" {prefer}
+  L-decimal = "(:D" [1-9]? ":)" {prefer}
+  L-decimal? = "(:D" [1-9]? "?:)" {prefer}
+  L-decimal* = "(:D" [1-9]? "*:)" {prefer}
+  L-decimal+ = "(:D" [1-9]? "+:)" {prefer}
+  L-id = "(:I" [1-9]? ":)" {prefer}
+  L-id? = "(:I" [1-9]? "?:)" {prefer}
+  L-id* = "(:I" [1-9]? "*:)" {prefer}
+  L-id+ = "(:I" [1-9]? "+:)" {prefer}
   
 // SDF comments
+  
+  // #1 Arithmetic expressions
+                
+  
   
 sorts // ASTs
   T-start
