@@ -7,48 +7,26 @@ imports
   pp/IBAF-pp
 
 imports
-  
+  cbs-gen/IBAF-Expressions
+  cbs-gen/IBAF-Statements
 
 // Language "IBAFlang"
 
 rules
 to-funcons:
-  |[ start[: (:AExp:) :] ]| ->
-  |[ initialise-binding finalise-failing eval-arith[: (:AExp:) :] ]|
-
-// #1 Arithmetic expressions
-              
-
+  |[ start[: (:Pgm:) :] ]| ->
+  |[ initialise-binding finalise-failing run[: (:Pgm:) :] ]|
 to-funcons:
-  |[ eval-arith[: (:N:) :] ]| ->
-  |[ int-val[: (:N:) :] ]|
+  |[ run[: int(:IL:);(:Stmt:) :] ]| ->
+  |[ scope (collateral (declare-int-vars[: (:IL:) :]), 
+             execute[: (:Stmt:) :]) ]|
 to-funcons:
-  |[ eval-arith[: (:I:) :] ]| ->
-  |[ assigned (bound (id[: (:I:) :])) ]|
+  |[ declare-int-vars[: (:Id:) :] ]| ->
+  |[ bind (\"(:Id:)\", 
+             allocate-initialised-variable (integers, 
+                     0)) ]|
 to-funcons:
-  |[ eval-arith[: (:AExp1:)+(:AExp2:) :] ]| ->
-  |[ integer-add (eval-arith[: (:AExp1:) :], 
-             eval-arith[: (:AExp2:) :]) ]|
-to-funcons:
-  |[ eval-arith[: (:AExp1:)/(:AExp2:) :] ]| ->
-  |[ checked integer-divide (eval-arith[: (:AExp1:) :], 
-                    eval-arith[: (:AExp2:) :]) ]|
-to-funcons:
-  |[ eval-arith[: ((:AExp:)) :] ]| ->
-  |[ eval-arith[: (:AExp:) :] ]|
-to-funcons-lex: 
-  FCTDoubleQuoted(L-decimal(LEX-decimal(str))) -> 
-  FCTString(<double-quote> str)
-to-funcons:
-  |[ int-val[: (:D:) :] ]| ->
-  |[ decimal-natural (\"(:D:)\") ]|
-to-funcons:
-  |[ int-val[: -(:D:) :] ]| ->
-  |[ integer-negate (int-val[: (:D:) :]) ]|
-to-funcons-lex: 
-  FCTDoubleQuoted(L-id(LEX-id(str))) -> 
-  FCTString(<double-quote> str)
-to-funcons:
-  |[ id[: (:I:) :] ]| ->
-  |[ \"(:I:)\" ]|
+  |[ declare-int-vars[: (:Id:),(:IL:) :] ]| ->
+  |[ declare-int-vars[: (:Id:) :], 
+     declare-int-vars[: (:IL:) :] ]|
 

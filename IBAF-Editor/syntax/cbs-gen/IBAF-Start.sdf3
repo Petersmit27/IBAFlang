@@ -1,103 +1,81 @@
 module IBAF-Start
             
 imports 
-  
+  IBAF-Expressions
+  IBAF-Statements
   Funcons
 
 // Language "IBAFlang"
     
 lexical syntax // Language
-  
-  // #1 Arithmetic expressions
-                
-  
-  LEX-DASH = "-"
-  LEX-decimal = ( [0-9] )+
-  LEX-id = ( [A-Z] | [a-z] )+
+  LEX-keyword = "else"
+  LEX-keyword = "false"
+  LEX-keyword = "if"
+  LEX-keyword = "true"
+  LEX-keyword = "while"
+  LEX-keyword = "int"
   
 syntax // Language
   
-  // #1 Arithmetic expressions
-                
-  
-  
 context-free syntax // Language
-  L-start.L-start--L-aexp =
-    L-aexp
+  L-start.L-start--L-pgm =
+    L-pgm
+  
+  L-pgm.L-pgm--R-int-L-idlist-SEMI-L-stmt =
+    "int" L-idlist ";" L-stmt
+  
+  L-idlist.L-idlist--L-id-C-COMMA-L-idlist-D-Q =
+    L-id L-COMMA-L-idlist?
+  
+  L-COMMA-L-idlist.L-COMMA-L-idlist--COMMA-L-idlist =
+    "," L-idlist
   
   
-  // #1 Arithmetic expressions
-                
-  
-  L-aexp.L-aexp--L-num =
-    L-num
-  L-aexp.L-aexp--L-id =
-    L-id
-  L-aexp.L-aexp--L-aexp-PLUS-L-aexp =
-    L-aexp "+" L-aexp
-  L-aexp.L-aexp--L-aexp-SLASH-L-aexp =
-    L-aexp "/" L-aexp
-  L-aexp.L-aexp--LPAREN-L-aexp-RPAREN =
-    "(" L-aexp ")"
-  
-  L-decimal.LEX-decimal = 
-    LEX-decimal
-  L-id.LEX-id = 
-    LEX-id
+  L-keyword.LEX-keyword =
+    LEX-keyword
   
 context-free syntax // Semantics
   FCT.T-start =
     "start" "[:" L-start ":]"
-  
-  // #1 Arithmetic expressions
-                
-  
-  FCT.T-eval-arith =
-    "eval-arith" "[:" L-aexp ":]"
-  FCT-Quoted.L-decimal = L-decimal
-  FCT.T-int-val =
-    "int-val" "[:" L-num ":]"
-  FCT-Quoted.L-id = L-id
-  FCT.T-id =
-    "id" "[:" L-id ":]"
+  FCT.T-run =
+    "run" "[:" L-pgm ":]"
+  FCT-SEQ.T-declare-int-vars =
+    "declare-int-vars" "[:" L-idlist ":]"
+  FCT-Quoted.LEX-keyword = LEX-keyword
   
 context-free syntax // Desugaring
-  
-  // #1 Arithmetic expressions
-                
-  
   
 variables // Meta-variables
   L-start = "(:START" [1-9]? ":)" {prefer}
   L-start? = "(:START" [1-9]? "?:)" {prefer}
   L-start* = "(:START" [1-9]? "*:)" {prefer}
   L-start+ = "(:START" [1-9]? "+:)" {prefer}
-  
-  // #1 Arithmetic expressions
-                
-  
-  L-aexp = "(:AExp" [1-9]? ":)" {prefer}
-  L-aexp? = "(:AExp" [1-9]? "?:)" {prefer}
-  L-aexp* = "(:AExp" [1-9]? "*:)" {prefer}
-  L-aexp+ = "(:AExp" [1-9]? "+:)" {prefer}
-  L-num = "(:N" [1-9]? ":)" {prefer}
-  L-num? = "(:N" [1-9]? "?:)" {prefer}
-  L-num* = "(:N" [1-9]? "*:)" {prefer}
-  L-num+ = "(:N" [1-9]? "+:)" {prefer}
-  L-decimal = "(:D" [1-9]? ":)" {prefer}
-  L-decimal? = "(:D" [1-9]? "?:)" {prefer}
-  L-decimal* = "(:D" [1-9]? "*:)" {prefer}
-  L-decimal+ = "(:D" [1-9]? "+:)" {prefer}
-  L-id = "(:I" [1-9]? ":)" {prefer}
-  L-id? = "(:I" [1-9]? "?:)" {prefer}
-  L-id* = "(:I" [1-9]? "*:)" {prefer}
-  L-id+ = "(:I" [1-9]? "+:)" {prefer}
+  L-pgm = "(:Pgm" [1-9]? ":)" {prefer}
+  L-pgm? = "(:Pgm" [1-9]? "?:)" {prefer}
+  L-pgm* = "(:Pgm" [1-9]? "*:)" {prefer}
+  L-pgm+ = "(:Pgm" [1-9]? "+:)" {prefer}
+  L-idlist = "(:IL" [1-9]? ":)" {prefer}
+  L-idlist? = "(:IL" [1-9]? "?:)" {prefer}
+  L-idlist* = "(:IL" [1-9]? "*:)" {prefer}
+  L-idlist+ = "(:IL" [1-9]? "+:)" {prefer}
   
 // SDF comments
   
-  // #1 Arithmetic expressions
-                
+  lexical syntax 
+    LEX-id = LEX-keyword {reject}
+  lexical restrictions
+    LEX-id -/- [A-Za-z0-9]
   
+  context-free syntax
+  L-exp.L-exp--L-exp-PLUS-L-exp =
+    L-exp "+" L-exp
+    {assoc}
+  L-exp.L-exp--L-exp-AMPERSAND-AMPERSAND-L-exp =
+    L-exp "&&" L-exp
+   {assoc}
+  L-stmt.L-stmt--L-stmt-L-stmt =
+    L-stmt L-stmt
+        {right}
   
 sorts // ASTs
   T-start

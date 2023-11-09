@@ -1,0 +1,66 @@
+Language "IBAFlang"
+
+# 1: General expressions
+Syntax Exp:exp ::= id
+                 | int
+                 | 'true'
+                 | 'false'
+                 | exp '+' exp
+                 | exp '-' exp
+                 | exp '*' exp
+                 | exp '/' exp
+                 | exp '%' exp
+                 | exp '&&' exp
+                 | exp '||' exp
+                 | exp '==' exp
+                 | exp '>=' exp
+                 | exp '>' exp
+                 | exp '<=' exp
+                 | exp '<' exp
+                 | '(' exp ')'
+
+Semantics eval-exp[[ _:exp ]] : => values
+Rule eval-exp[[ Id ]] = assigned(bound(id[[ Id ]]))
+Rule eval-exp[[ Int ]] = int-val[[ Int ]]
+Rule eval-exp[[ 'true' ]] = true
+Rule eval-exp[[ 'false' ]] = false
+Rule eval-exp[[ Exp1 '+' Exp2 ]] = int-add(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
+Rule eval-exp[[ Exp1 '-' Exp2 ]] = int-sub(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
+Rule eval-exp[[ Exp1 '*' Exp2 ]] = int-mul(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
+Rule eval-exp[[ Exp1 '/' Exp2 ]] = checked int-div(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
+Rule eval-exp[[ Exp1 '%' Exp2 ]] = checked int-mod(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
+Rule eval-exp[[ Exp1 '&&' Exp2 ]] = and(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
+Rule eval-exp[[ Exp1 '||' Exp2 ]] = and(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
+Rule eval-exp[[ Exp1 '==' Exp2 ]] = is-equal(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
+Rule eval-exp[[ Exp1 '>=' Exp2 ]] = is-greater-or-equal(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
+Rule eval-exp[[ Exp1 '>' Exp2 ]] = is-greater(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
+Rule eval-exp[[ Exp1 '<=' Exp2 ]] = is-less-or-equal(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
+Rule eval-exp[[ Exp1 '<' Exp2 ]] = is-less(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
+Rule eval-exp[[ '(' Exp ')' ]] = eval-exp[[ Exp ]]
+
+
+
+Lexis Id:id ::= ('a'-'z' | 'A'-'Z') ('a'-'z' | 'A'-'Z' | '0'-'9')*
+
+Semantics id[[ _:id ]] : ids
+Rule id[[ Id ]] = \"Id\"
+
+
+Syntax Int:int ::= '0' | ('-'?_decimal)
+
+Semantics int-val[[ _:int ]] : ints
+Rule int-val[[ '0' ]] = decimal-natural(\"0\")
+Rule int-val[[ Dec ]] = dec-val[[ Dec ]]
+Rule int-val[[ '-' Dec ]] = integer-negate(dec-val[[ Dec ]])
+
+
+Lexis Dec:decimal ::= '1'-'9'('0'-'9')*
+
+Semantics dec-val[[ _:decimal ]] : ints
+Rule dec-val[[ Dec ]] = decimal-natural(\"Dec\")
+
+
+
+
+
+

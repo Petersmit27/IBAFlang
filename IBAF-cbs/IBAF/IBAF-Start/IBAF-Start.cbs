@@ -1,55 +1,47 @@
 Language "IBAFlang"
     
-Syntax START:start ::= aexp
+Syntax START:start ::= pgm
     
-Semantics start[[ _:start ]] : =>values
+Semantics start[[ _:start ]] : =>null-type
 
-Rule start[[ AExp ]] = 
+Rule start[[ Pgm ]] = 
 	initialise-binding 
 	finalise-failing 
-	eval-arith[[ AExp ]]
-  
-
-#1 Arithmetic expressions
+	run [[ Pgm ]]
 
 
-Syntax 
-  AExp : aexp ::= num
-               |  id 
-               |  aexp '+' aexp 
-               |  aexp '/' aexp
-               |  '(' aexp ')'
 
-Semantics       
-  eval-arith[[ _:aexp ]] : =>integers
-Rule
-  eval-arith[[ N ]] = int-val[[ N ]]
-Rule
-  eval-arith[[ I ]] = assigned(bound(id[[ I ]]))
-Rule
-  eval-arith[[ AExp1 '+' AExp2 ]] = 
-    integer-add(eval-arith[[ AExp1 ]], eval-arith[[ AExp2 ]])
-Rule
-  eval-arith[[ AExp1 '/' AExp2 ]] = 
-    checked integer-divide(eval-arith[[ AExp1 ]], eval-arith[[ AExp2 ]])
-Rule
-  eval-arith[[ '(' AExp ')' ]] = eval-arith[[ AExp ]]
 
-Syntax
-  N : num ::= '-'?_decimal
-Lexis
-  D : decimal ::= ('0'-'9')+
-Semantics
-  int-val[[ _:num ]] : integers
-Rule
-  int-val[[ D ]] = decimal-natural(\"D\")
-Rule
-  int-val[[ '-' D ]] = integer-negate(int-val[[ D ]])
 
-Lexis
-  I : id ::= ('A'-'Z'|'a'-'z')+
-Semantics
-  id[[ _:id ]] : ids
-Rule
-  id[[ I ]] = \"I\"
+Syntax Pgm : pgm ::= 'int' idlist ';' stmt
 
+Semantics run[[ _:pgm ]] : =>null-type
+Rule run[[ 'int' IL ';' Stmt ]] = 
+    scope( collateral(declare-int-vars[[ IL ]]), 
+           execute[[ Stmt ]] )
+
+Syntax IL : idlist ::= id (',' idlist)?
+
+Semantics declare-int-vars[[ _: idlist ]] : (=>environments)+
+Rule declare-int-vars[[ Id ]] = bind(\"Id\", allocate-initialised-variable(integers, 0))
+Rule declare-int-vars[[ Id ',' IL ]] = declare-int-vars[[ Id ]], declare-int-vars[[ IL ]]
+
+
+
+
+Lexis keyword ::= 'else' | 'false' | 'if' | 'true' | 'while' | 'int'
+Lexis SDF
+/*
+lexical syntax 
+  ``id`` = ``keyword`` {reject}
+lexical restrictions
+  ``id`` -/- [A-Za-z0-9]
+*/
+
+Syntax SDF
+/*
+context-free syntax
+``exp ::= exp '+' exp``  {assoc}
+``exp ::= exp '&&' exp`` {assoc}
+``stmt ::= stmt stmt``      {right}
+*/

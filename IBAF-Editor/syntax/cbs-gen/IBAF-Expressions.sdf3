@@ -1,0 +1,128 @@
+module IBAF-Expressions
+            
+imports 
+  
+  Funcons
+
+// Language "IBAFlang"
+    
+lexical syntax // Language
+  
+  // # 1: General expressions
+                   
+  
+  LEX-id = ( [a-z] | [A-Z] ) ( [a-z] | [A-Z] | [0-9] )*
+  LEX-DASH = "-"
+  LEX-decimal = [1-9] ( [0-9] )*
+  
+syntax // Language
+  
+  // # 1: General expressions
+                   
+  
+  L-int-CF.L-int--R-0 =
+    "0"
+  L-int-CF.L-int--C-DASH-Q-L-decimal-D =
+    L-DASH-Q-L-decimal-CF
+  L-DASH-Q-L-decimal-CF.L-DASH-Q-L-decimal--DASH-Q-L-decimal =
+    LEX-DASH-CF? L-decimal-CF
+  
+  
+  
+context-free syntax // Language
+  
+  // # 1: General expressions
+                   
+  
+  L-exp.L-exp--L-id =
+    L-id
+  L-exp.L-exp--L-int =
+    L-int
+  L-exp.L-exp--R-true =
+    "true"
+  L-exp.L-exp--R-false =
+    "false"
+  L-exp.L-exp--L-exp-PLUS-L-exp =
+    L-exp "+" L-exp
+  L-exp.L-exp--L-exp-DASH-L-exp =
+    L-exp "-" L-exp
+  L-exp.L-exp--L-exp-STAR-L-exp =
+    L-exp "*" L-exp
+  L-exp.L-exp--L-exp-SLASH-L-exp =
+    L-exp "/" L-exp
+  L-exp.L-exp--L-exp-PERCENT-L-exp =
+    L-exp "%" L-exp
+  L-exp.L-exp--L-exp-AMPERSAND-AMPERSAND-L-exp =
+    L-exp "&&" L-exp
+  L-exp.L-exp--L-exp-BAR-BAR-L-exp =
+    L-exp "||" L-exp
+  L-exp.L-exp--L-exp-EQUALS-EQUALS-L-exp =
+    L-exp "==" L-exp
+  L-exp.L-exp--L-exp-GREATER-EQUALS-L-exp =
+    L-exp ">=" L-exp
+  L-exp.L-exp--L-exp-GREATER-L-exp =
+    L-exp ">" L-exp
+  L-exp.L-exp--L-exp-LESS-EQUALS-L-exp =
+    L-exp "<=" L-exp
+  L-exp.L-exp--L-exp-LESS-L-exp =
+    L-exp "<" L-exp
+  L-exp.L-exp--LPAREN-L-exp-RPAREN =
+    "(" L-exp ")"
+  
+  L-id.LEX-id =
+    LEX-id
+  L-decimal.LEX-decimal =
+    LEX-decimal
+  
+context-free syntax // Semantics
+  
+  // # 1: General expressions
+                   
+  
+  FCT.T-eval-exp =
+    "eval-exp" "[:" L-exp ":]"
+  FCT-Quoted.L-id = L-id
+  FCT.T-id =
+    "id" "[:" L-id ":]"
+  FCT.T-int-val =
+    "int-val" "[:" L-int ":]"
+  FCT-Quoted.L-decimal = L-decimal
+  FCT.T-dec-val =
+    "dec-val" "[:" L-decimal ":]"
+  
+context-free syntax // Desugaring
+  
+  // # 1: General expressions
+                   
+  
+  
+variables // Meta-variables
+  
+  // # 1: General expressions
+                   
+  
+  L-exp = "(:Exp" [1-9]? ":)" {prefer}
+  L-exp? = "(:Exp" [1-9]? "?:)" {prefer}
+  L-exp* = "(:Exp" [1-9]? "*:)" {prefer}
+  L-exp+ = "(:Exp" [1-9]? "+:)" {prefer}
+  L-id = "(:Id" [1-9]? ":)" {prefer}
+  L-id? = "(:Id" [1-9]? "?:)" {prefer}
+  L-id* = "(:Id" [1-9]? "*:)" {prefer}
+  L-id+ = "(:Id" [1-9]? "+:)" {prefer}
+  L-int = "(:Int" [1-9]? ":)" {prefer}
+  L-int? = "(:Int" [1-9]? "?:)" {prefer}
+  L-int* = "(:Int" [1-9]? "*:)" {prefer}
+  L-int+ = "(:Int" [1-9]? "+:)" {prefer}
+  L-decimal = "(:Dec" [1-9]? ":)" {prefer}
+  L-decimal? = "(:Dec" [1-9]? "?:)" {prefer}
+  L-decimal* = "(:Dec" [1-9]? "*:)" {prefer}
+  L-decimal+ = "(:Dec" [1-9]? "+:)" {prefer}
+  
+// SDF comments
+  
+  // # 1: General expressions
+                   
+  
+  
+sorts // ASTs
+  T-start

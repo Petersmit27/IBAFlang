@@ -1,0 +1,41 @@
+Language "IBAFlang"
+
+
+Syntax Stmt:stmt ::= type id '=' exp ';'
+				   | 'print' '(' exp ')' ';'
+//				   | '{' stmt '}'
+				   | stmt stmt
+				   
+				   
+Syntax Typ:type ::= 'int'
+                   | 'bool'
+                   | id
+
+Semantics execute[[ _:stmt ]] : => null
+
+Rule execute[[ Typ Id '=' Exp ';' ]] = assign(bound(id[[ Id ]]), eval-exp[[ Exp ]])
+Rule execute[[ 'print' '(' Exp ')' ';' ]] = print(eval-exp[[ Exp ]])
+
+//Rule execute[[ '{' Stmt '}' ]] = scope(
+//	collateral(collect-declared-vars[[ Stmt ]]),
+//	execute[[ Stmt ]]
+//)
+
+Rule execute[[ Stmt1 Stmt2 ]] = sequential(execute[[ Stmt1 ]], execute[[ Stmt2 ]])
+
+
+
+//Semantics collect-declared-vars[[ _:stmt ]] : (=>environments)*
+//
+//
+//Rule collect-declared-vars[[ Typ Id '=' Exp ';' ]] = 
+//	bind(
+//		\"Id\", 
+//		allocate-initialised-variable(
+//			integers, //TODO: use type
+//			eval-exp[[ Exp ]]
+//		)
+//	)
+//Rule collect-declared-vars[[ Stmt ]] = null
+//Rule collect-declared-vars[[ Stmt1 Stmt2 ]] = (collect-declared-vars[[ Stmt1 ]], collect-declared-vars[[ Stmt2 ]]))
+

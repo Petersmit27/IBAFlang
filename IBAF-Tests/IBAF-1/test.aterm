@@ -1,0 +1,50 @@
+L-start--L-pgm(
+  L-pgm--R-int-L-idlist-SEMI-L-stmt(
+    L-idlist--L-id-C-COMMA-L-idlist-D-Q(
+      LEX-id("x")
+    , Some(L-COMMA-L-idlist--COMMA-L-idlist(L-idlist--L-id-C-COMMA-L-idlist-D-Q(LEX-id("y"), None())))
+    )
+  , L-stmt--L-stmt-L-stmt(
+      L-stmt--L-id-EQUALS-L-exp-SEMI(
+        LEX-id("x")
+      , L-exp--L-aexp(
+          L-aexp--L-aexp-PERCENT-L-aexp(
+            L-aexp--L-int(L-int--C-DASH-Q-L-decimal-D(L-DASH-Q-L-decimal--DASH-Q-L-decimal(None(), LEX-decimal("10"))))
+          , L-aexp--L-int(L-int--C-DASH-Q-L-decimal-D(L-DASH-Q-L-decimal--DASH-Q-L-decimal(None(), LEX-decimal("3"))))
+          )
+        )
+      )
+    , L-stmt--L-stmt-L-stmt(
+        L-stmt--L-id-EQUALS-L-exp-SEMI(
+          LEX-id("y")
+        , L-exp--L-aexp(
+            L-aexp--L-aexp-PLUS-L-aexp(
+              L-aexp--L-id(LEX-id("x"))
+            , L-aexp--L-int(L-int--C-DASH-Q-L-decimal-D(L-DASH-Q-L-decimal--DASH-Q-L-decimal(None(), LEX-decimal("10"))))
+            )
+          )
+        )
+      , L-stmt--L-stmt-L-stmt(
+          L-stmt--R-print-LPAREN-L-exp-RPAREN-SEMI(
+            amb(
+              [ amb(
+                  [L-exp--L-id(LEX-id("x")), L-exp--L-bexp(L-bexp--L-id(LEX-id("x")))]
+                )
+              , L-exp--L-aexp(L-aexp--L-id(LEX-id("x")))
+              ]
+            )
+          )
+        , L-stmt--R-print-LPAREN-L-exp-RPAREN-SEMI(
+            amb(
+              [ amb(
+                  [L-exp--L-id(LEX-id("y")), L-exp--L-bexp(L-bexp--L-id(LEX-id("y")))]
+                )
+              , L-exp--L-aexp(L-aexp--L-id(LEX-id("y")))
+              ]
+            )
+          )
+        )
+      )
+    )
+  )
+)

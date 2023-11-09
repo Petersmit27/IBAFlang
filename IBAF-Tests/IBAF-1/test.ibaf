@@ -1,0 +1,13 @@
+int x, y;
+
+int x = 10;
+int y = x % 3;
+
+print(x);
+print(y);
+
+print(x == 1);
+print(x == y);
+print(x < y);
+
+print(x + 2);

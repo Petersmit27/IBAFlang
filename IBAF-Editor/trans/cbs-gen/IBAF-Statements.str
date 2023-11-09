@@ -1,0 +1,26 @@
+module IBAF-Statements
+
+imports
+  libstratego-gpp
+  signatures/-
+  pp/IBAF-parenthesize
+  pp/IBAF-pp
+
+imports
+  cbs-gen/IBAF-Expressions
+
+// Language "IBAFlang"
+
+rules
+to-funcons:
+  |[ execute[: (:Typ:)(:Id:)=(:Exp:); :] ]| ->
+  |[ assign (bound (id[: (:Id:) :]), 
+             eval-exp[: (:Exp:) :]) ]|
+to-funcons:
+  |[ execute[: print((:Exp:)); :] ]| ->
+  |[ print (eval-exp[: (:Exp:) :]) ]|
+to-funcons:
+  |[ execute[: (:Stmt1:)(:Stmt2:) :] ]| ->
+  |[ sequential (execute[: (:Stmt1:) :], 
+             execute[: (:Stmt2:) :]) ]|
+
