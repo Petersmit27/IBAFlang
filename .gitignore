@@ -1,10 +1,4 @@
-/.cache
-/bin
-/src-gen
-/target
-
-/.classpath
-/.settings
-/.factorypath
-
-/.polyglot.metaborg.yaml
+IBAF-cbs/target
+IBAF-Tests/target
+IBAF-Editor/src-gen
+IBAF-Editor/target
