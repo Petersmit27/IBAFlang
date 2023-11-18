@@ -7,26 +7,13 @@ imports
   pp/IBAF-pp
 
 imports
-  cbs-gen/IBAF-Expressions
   cbs-gen/IBAF-Statements
+  cbs-gen/IBAF-Expressions
 
 // Language "IBAFlang"
 
 rules
 to-funcons:
-  |[ start[: (:Pgm:) :] ]| ->
-  |[ initialise-binding finalise-failing run[: (:Pgm:) :] ]|
-to-funcons:
-  |[ run[: int(:IL:);(:Stmt:) :] ]| ->
-  |[ scope (collateral (declare-int-vars[: (:IL:) :]), 
-             execute[: (:Stmt:) :]) ]|
-to-funcons:
-  |[ declare-int-vars[: (:Id:) :] ]| ->
-  |[ bind (\"(:Id:)\", 
-             allocate-initialised-variable (integers, 
-                     0)) ]|
-to-funcons:
-  |[ declare-int-vars[: (:Id:),(:IL:) :] ]| ->
-  |[ declare-int-vars[: (:Id:) :], 
-     declare-int-vars[: (:IL:) :] ]|
+  |[ start[: (:Stmt*:) :] ]| ->
+  |[ initialise-binding execute[: {(:Stmt*:)} :] ]|
 

@@ -1,30 +1,9 @@
 Language "IBAFlang"
     
-Syntax START:start ::= pgm
-    
+Syntax START:start ::= statement*
 Semantics start[[ _:start ]] : =>null-type
+Rule start[[ Stmt* ]] = initialise-binding execute[[ '{' Stmt* '}' ]]
 
-Rule start[[ Pgm ]] = 
-	initialise-binding 
-	finalise-failing 
-	run [[ Pgm ]]
-
-
-
-
-
-Syntax Pgm : pgm ::= 'int' idlist ';' stmt
-
-Semantics run[[ _:pgm ]] : =>null-type
-Rule run[[ 'int' IL ';' Stmt ]] = 
-    scope( collateral(declare-int-vars[[ IL ]]), 
-           execute[[ Stmt ]] )
-
-Syntax IL : idlist ::= id (',' idlist)?
-
-Semantics declare-int-vars[[ _: idlist ]] : (=>environments)+
-Rule declare-int-vars[[ Id ]] = bind(\"Id\", allocate-initialised-variable(integers, 0))
-Rule declare-int-vars[[ Id ',' IL ]] = declare-int-vars[[ Id ]], declare-int-vars[[ IL ]]
 
 
 
@@ -43,5 +22,4 @@ Syntax SDF
 context-free syntax
 ``exp ::= exp '+' exp``  {assoc}
 ``exp ::= exp '&&' exp`` {assoc}
-``stmt ::= stmt stmt``      {right}
 */

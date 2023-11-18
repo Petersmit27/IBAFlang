@@ -1,8 +1,8 @@
 module IBAF-Start
             
 imports 
-  IBAF-Expressions
   IBAF-Statements
+  IBAF-Expressions
   Funcons
 
 // Language "IBAFlang"
@@ -18,18 +18,8 @@ lexical syntax // Language
 syntax // Language
   
 context-free syntax // Language
-  L-start.L-start--L-pgm =
-    L-pgm
-  
-  L-pgm.L-pgm--R-int-L-idlist-SEMI-L-stmt =
-    "int" L-idlist ";" L-stmt
-  
-  L-idlist.L-idlist--L-id-C-COMMA-L-idlist-D-Q =
-    L-id L-COMMA-L-idlist?
-  
-  L-COMMA-L-idlist.L-COMMA-L-idlist--COMMA-L-idlist =
-    "," L-idlist
-  
+  L-start.L-start--L-statement-S =
+    L-statement*
   
   L-keyword.LEX-keyword =
     LEX-keyword
@@ -37,10 +27,6 @@ context-free syntax // Language
 context-free syntax // Semantics
   FCT.T-start =
     "start" "[:" L-start ":]"
-  FCT.T-run =
-    "run" "[:" L-pgm ":]"
-  FCT-SEQ.T-declare-int-vars =
-    "declare-int-vars" "[:" L-idlist ":]"
   FCT-Quoted.LEX-keyword = LEX-keyword
   
 context-free syntax // Desugaring
@@ -50,14 +36,7 @@ variables // Meta-variables
   L-start? = "(:START" [1-9]? "?:)" {prefer}
   L-start* = "(:START" [1-9]? "*:)" {prefer}
   L-start+ = "(:START" [1-9]? "+:)" {prefer}
-  L-pgm = "(:Pgm" [1-9]? ":)" {prefer}
-  L-pgm? = "(:Pgm" [1-9]? "?:)" {prefer}
-  L-pgm* = "(:Pgm" [1-9]? "*:)" {prefer}
-  L-pgm+ = "(:Pgm" [1-9]? "+:)" {prefer}
-  L-idlist = "(:IL" [1-9]? ":)" {prefer}
-  L-idlist? = "(:IL" [1-9]? "?:)" {prefer}
-  L-idlist* = "(:IL" [1-9]? "*:)" {prefer}
-  L-idlist+ = "(:IL" [1-9]? "+:)" {prefer}
+  L-statement* = "..." [1-9]? {prefer}
   
 // SDF comments
   
@@ -73,9 +52,6 @@ variables // Meta-variables
   L-exp.L-exp--L-exp-AMPERSAND-AMPERSAND-L-exp =
     L-exp "&&" L-exp
    {assoc}
-  L-stmt.L-stmt--L-stmt-L-stmt =
-    L-stmt L-stmt
-        {right}
   
 sorts // ASTs
   T-start

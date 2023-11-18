@@ -12,15 +12,58 @@ imports
 // Language "IBAFlang"
 
 rules
+
+// # Statements
+                 
+
 to-funcons:
-  |[ execute[: (:Typ:)(:Id:)=(:Exp:); :] ]| ->
-  |[ assign (bound (id[: (:Id:) :]), 
-             eval-exp[: (:Exp:) :]) ]|
+  |[ execute[: {(:Stmt*:)} :] ]| ->
+  |[ scope (collateral collect-declared-vars[: (:Stmt*:) :], 
+             execute[: (:Stmt*:) :]) ]|
 to-funcons:
   |[ execute[: print((:Exp:)); :] ]| ->
-  |[ print (eval-exp[: (:Exp:) :]) ]|
+  |[ print eval-exp[: (:Exp:) :] ]|
 to-funcons:
-  |[ execute[: (:Stmt1:)(:Stmt2:) :] ]| ->
-  |[ sequential (execute[: (:Stmt1:) :], 
-             execute[: (:Stmt2:) :]) ]|
+  |[ execute[: (:Typ:)(:Id:); :] ]| ->
+  |[ null ]|
+to-funcons:
+  |[ execute[: (:Typ:)(:Id:)=(:Exp:); :] ]| ->
+  |[ assign (bound id[: (:Id:) :], 
+             eval-exp[: (:Exp:) :]) ]|
+to-funcons:
+  |[ execute[: (:Id:)=(:Exp:); :] ]| ->
+  |[ assign (bound id[: (:Id:) :], 
+             eval-exp[: (:Exp:) :]) ]|
+to-funcons:
+  |[ execute[:  :] ]| ->
+  |[ null ]|
+to-funcons:
+  |[ execute[: (:Stmt:)(:Stmt+:) :] ]| ->
+  |[ sequential (execute[: (:Stmt:) :], 
+             execute[: (:Stmt+:) :]) ]|
+
+// # Handling variable declarations
+                 
+
+to-funcons:
+  |[ collect-declared-vars[: (:Typ:)(:Id:)=(:Exp:); :] ]| ->
+  |[ bind (\"(:Id:)\", 
+             allocate-initialised-variable (integers, 
+                     0)) ]|
+to-funcons:
+  |[ collect-declared-vars[: (:Typ:)(:Id:); :] ]| ->
+  |[ bind (\"(:Id:)\", 
+             allocate-initialised-variable (integers, 
+                     0)) ]|
+to-funcons:
+  |[ collect-declared-vars[:  :] ]| ->
+  |[ map () ]|
+to-funcons:
+  |[ collect-declared-vars[: (:Stmt:) :] ]| ->
+  |[ map () ]|
+to-funcons:
+  |[ collect-declared-vars[: (:Stmt1:)(:Stmt2:)(:Stmt*:) :] ]| ->
+  |[ collect-declared-vars[: (:Stmt1:) :], 
+     collect-declared-vars[: (:Stmt2:) :], 
+     collect-declared-vars[: (:Stmt*:) :] ]|
 

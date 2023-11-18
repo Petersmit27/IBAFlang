@@ -1,0 +1,99 @@
+initialise-binding scope
+  (collateral
+     (bind
+        ("z",
+         allocate-initialised-variable
+           (integers,
+            0)),
+      bind
+        ("x",
+         allocate-initialised-variable
+           (integers,
+            0)),
+      map
+        ( ),
+      map
+        ( ),
+      map
+        ( ),
+      map
+        ( ),
+      map
+        ( ),
+      map
+        ( ),
+      map
+        ( )),
+   sequential
+     (assign
+        (bound
+           ("z"),
+         decimal-natural
+           ("5")),
+      assign
+        (bound
+           ("x"),
+         int-mul
+           (decimal-natural
+              ("5"),
+            decimal-natural
+              ("3"))),
+      print
+        (assigned
+           (bound
+              ("x"))),
+      assign
+        (bound
+           ("x"),
+         decimal-natural
+           ("2")),
+      print
+        (int-mul
+           (assigned
+              (bound
+                 ("x")),
+            decimal-natural
+              ("3"))),
+      scope
+        (collateral
+           (bind
+              ("y",
+               allocate-initialised-variable
+                 (integers,
+                  0)),
+            map
+              ( ),
+            map
+              ( )),
+         sequential
+           (assign
+              (bound
+                 ("y"),
+               decimal-natural
+                 ("4")),
+            print
+              (assigned
+                 (bound
+                    ("y"))))),
+      assign
+        (bound
+           ("z"),
+         int-mul
+           (assigned
+              (bound
+                 ("z")),
+            assigned
+              (bound
+                 ("x")))),
+      print
+        (assigned
+           (bound
+              ("z"))),
+      print
+        (int-add
+           (assigned
+              (bound
+                 ("z")),
+            assigned
+              (bound
+                 ("x"))))))

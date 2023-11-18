@@ -8,15 +8,39 @@ imports
     
 lexical syntax // Language
   
+  // # Statements
+                   
+  
+  
+  // # Handling variable declarations
+                   
+  
+  
 syntax // Language
   
+  // # Statements
+                   
+  
+  
+  // # Handling variable declarations
+                   
+  
+  
 context-free syntax // Language
-  L-stmt.L-stmt--L-type-L-id-EQUALS-L-exp-SEMI =
-    L-type L-id "=" L-exp ";"
-  L-stmt.L-stmt--R-print-LPAREN-L-exp-RPAREN-SEMI =
+  
+  // # Statements
+                   
+  
+  L-statement.L-statement--LBRACE-L-statement-S-RBRACE =
+    "{" L-statement* "}"
+  L-statement.L-statement--R-print-LPAREN-L-exp-RPAREN-SEMI =
     "print" "(" L-exp ")" ";"
-  L-stmt.L-stmt--L-stmt-L-stmt =
-    L-stmt L-stmt
+  L-statement.L-statement--L-type-L-id-SEMI =
+    L-type L-id ";"
+  L-statement.L-statement--L-type-L-id-EQUALS-L-exp-SEMI =
+    L-type L-id "=" L-exp ";"
+  L-statement.L-statement--L-id-EQUALS-L-exp-SEMI =
+    L-id "=" L-exp ";"
   
   L-type.L-type--R-int =
     "int"
@@ -26,23 +50,62 @@ context-free syntax // Language
     L-id
   
   
+  // # Handling variable declarations
+                   
+  
+  
 context-free syntax // Semantics
+  
+  // # Statements
+                   
+  
   FCT.T-execute =
-    "execute" "[:" L-stmt ":]"
+    "execute" "[:" L-statement* ":]"
+  
+  // # Handling variable declarations
+                   
+  
+  FCT-SEQ.T-collect-declared-vars =
+    "collect-declared-vars" "[:" L-statement* ":]"
   
 context-free syntax // Desugaring
   
+  // # Statements
+                   
+  
+  
+  // # Handling variable declarations
+                   
+  
+  
 variables // Meta-variables
-  L-stmt = "(:Stmt" [1-9]? ":)" {prefer}
-  L-stmt? = "(:Stmt" [1-9]? "?:)" {prefer}
-  L-stmt* = "(:Stmt" [1-9]? "*:)" {prefer}
-  L-stmt+ = "(:Stmt" [1-9]? "+:)" {prefer}
+  
+  // # Statements
+                   
+  
+  L-statement = "(:Stmt" [1-9]? ":)" {prefer}
+  L-statement? = "(:Stmt" [1-9]? "?:)" {prefer}
+  L-statement* = "(:Stmt" [1-9]? "*:)" {prefer}
+  L-statement+ = "(:Stmt" [1-9]? "+:)" {prefer}
+  L-statement* = "..." [1-9]? {prefer}
   L-type = "(:Typ" [1-9]? ":)" {prefer}
   L-type? = "(:Typ" [1-9]? "?:)" {prefer}
   L-type* = "(:Typ" [1-9]? "*:)" {prefer}
   L-type+ = "(:Typ" [1-9]? "+:)" {prefer}
   
+  // # Handling variable declarations
+                   
+  
+  
 // SDF comments
+  
+  // # Statements
+                   
+  
+  
+  // # Handling variable declarations
+                   
+  
   
 sorts // ASTs
   T-start

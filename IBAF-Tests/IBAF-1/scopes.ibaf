@@ -1,0 +1,16 @@
+
+int z =5;
+int x =5*3;
+print(x);
+
+x = 2;
+print(x*3);
+
+{
+    int y =4;
+    print (y);
+}
+
+z = z * x;
+print(z);
+print(z+x);

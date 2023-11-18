@@ -1,41 +1,64 @@
 Language "IBAFlang"
 
+# Statements
 
-Syntax Stmt:stmt ::= type id '=' exp ';'
-				   | 'print' '(' exp ')' ';'
-//				   | '{' stmt '}'
-				   | stmt stmt
-				   
-				   
+Syntax Stmt: statement ::= '{' statement* '}'
+                    | 'print' '(' exp ')' ';'
+                    | type id ';'
+                    | type id '=' exp ';'
+                    | id '=' exp ';'
+
 Syntax Typ:type ::= 'int'
                    | 'bool'
                    | id
 
-Semantics execute[[ _:stmt ]] : => null
 
-Rule execute[[ Typ Id '=' Exp ';' ]] = assign(bound(id[[ Id ]]), eval-exp[[ Exp ]])
-Rule execute[[ 'print' '(' Exp ')' ';' ]] = print(eval-exp[[ Exp ]])
+Semantics execute[[ Stmt*:statement* ]] : => null-type
 
-//Rule execute[[ '{' Stmt '}' ]] = scope(
-//	collateral(collect-declared-vars[[ Stmt ]]),
-//	execute[[ Stmt ]]
-//)
+Rule execute[[ '{' Stmt* '}' ]] = scope(collateral collect-declared-vars[[ Stmt* ]], execute[[ Stmt* ]])
+Rule execute[[ 'print' '(' Exp ')' ';' ]] = print eval-exp[[ Exp ]]
+Rule execute[[ Typ Id ';' ]] = null
+Rule execute[[ Typ Id '=' Exp ';' ]] = assign(bound id[[ Id ]], eval-exp[[ Exp ]])
+Rule execute[[ Id '=' Exp ';' ]] = assign(bound id[[ Id ]], eval-exp[[ Exp ]])
 
-Rule execute[[ Stmt1 Stmt2 ]] = sequential(execute[[ Stmt1 ]], execute[[ Stmt2 ]])
+Rule execute[[ ]] = null
+Rule execute[[ Stmt Stmt+ ]] = sequential(execute[[ Stmt ]], execute[[ Stmt+ ]])
 
 
 
-//Semantics collect-declared-vars[[ _:stmt ]] : (=>environments)*
-//
-//
-//Rule collect-declared-vars[[ Typ Id '=' Exp ';' ]] = 
-//	bind(
-//		\"Id\", 
-//		allocate-initialised-variable(
-//			integers, //TODO: use type
-//			eval-exp[[ Exp ]]
-//		)
-//	)
-//Rule collect-declared-vars[[ Stmt ]] = null
-//Rule collect-declared-vars[[ Stmt1 Stmt2 ]] = (collect-declared-vars[[ Stmt1 ]], collect-declared-vars[[ Stmt2 ]]))
+
+# Handling variable declarations
+
+Semantics collect-declared-vars[[ Stmt*:statement* ]] : (=>environments)+
+
+Rule collect-declared-vars[[ Typ Id '=' Exp ';' ]] = 
+  bind(
+        \"Id\", 
+        allocate-initialised-variable(
+            integers, //TODO: use type
+            0 //TODO: use correct default value for type
+        )
+    )
+Rule collect-declared-vars[[ Typ Id ';' ]] = 
+  bind(
+        \"Id\", 
+        allocate-initialised-variable(
+            integers, //TODO: use type
+            0 //TODO: use correct default value for type
+        )
+    )
+Rule collect-declared-vars[[ ]] = map()
+Rule collect-declared-vars[[ Stmt ]] = map()
+Rule collect-declared-vars[[ Stmt1 Stmt2 Stmt* ]] = collect-declared-vars[[ Stmt1 ]], collect-declared-vars[[ Stmt2 ]], collect-declared-vars[[ Stmt* ]]
+
+
+
+
+
+
+
+
+
+
+
 

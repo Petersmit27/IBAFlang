@@ -34,7 +34,7 @@ to-funcons:
              eval-exp[: (:Exp2:) :]) ]|
 to-funcons:
   |[ eval-exp[: (:Exp1:)-(:Exp2:) :] ]| ->
-  |[ int-sub (eval-exp[: (:Exp1:) :], 
+  |[ integer-subtract (eval-exp[: (:Exp1:) :], 
              eval-exp[: (:Exp2:) :]) ]|
 to-funcons:
   |[ eval-exp[: (:Exp1:)*(:Exp2:) :] ]| ->
