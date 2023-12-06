@@ -17,6 +17,7 @@ Syntax Exp:exp ::= id
                  | exp '>' exp
                  | exp '<=' exp
                  | exp '<' exp
+                 | id '(' ')'
                  | '(' exp ')'
 
 Semantics eval-exp[[ _:exp ]] : => values
@@ -36,6 +37,7 @@ Rule eval-exp[[ Exp1 '>=' Exp2 ]] = is-greater-or-equal(eval-exp[[ Exp1 ]], eval
 Rule eval-exp[[ Exp1 '>' Exp2 ]] = is-greater(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
 Rule eval-exp[[ Exp1 '<=' Exp2 ]] = is-less-or-equal(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
 Rule eval-exp[[ Exp1 '<' Exp2 ]] = is-less(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
+Rule eval-exp[[ Id '(' ')' ]] = enact id[[ Id ]]
 Rule eval-exp[[ '(' Exp ')' ]] = eval-exp[[ Exp ]]
 
 
