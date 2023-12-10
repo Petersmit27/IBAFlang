@@ -35,23 +35,14 @@ context-free syntax // Language
     "{" L-statement* "}"
   L-statement.L-statement--R-print-LPAREN-L-exp-RPAREN-SEMI =
     "print" "(" L-exp ")" ";"
-  L-statement.L-statement--L-type-L-id-SEMI =
-    L-type L-id ";"
-  L-statement.L-statement--L-type-L-id-EQUALS-L-exp-SEMI =
-    L-type L-id "=" L-exp ";"
+  L-statement.L-statement--L-id-SEMI =
+    L-id ";"
   L-statement.L-statement--L-id-EQUALS-L-exp-SEMI =
     L-id "=" L-exp ";"
   L-statement.L-statement--R-return-L-exp-Q-SEMI =
     "return" L-exp? ";"
   L-statement.L-statement--R-fun-L-id-LPAREN-RPAREN-LBRACE-L-statement-S-RBRACE =
     "fun" L-id "(" ")" "{" L-statement* "}"
-  
-  L-type.L-type--R-int =
-    "int"
-  L-type.L-type--R-bool =
-    "bool"
-  L-type.L-type--L-id =
-    L-id
   
   
   // # Handling variable declarations
@@ -93,10 +84,6 @@ variables // Meta-variables
   L-statement+ = "(:Stmt" [1-9]? "+:)" {prefer}
   L-statement* = "..." [1-9]? {prefer}
   L-statement* = "..." [1-9]? {prefer}
-  L-type = "(:Typ" [1-9]? ":)" {prefer}
-  L-type? = "(:Typ" [1-9]? "?:)" {prefer}
-  L-type* = "(:Typ" [1-9]? "*:)" {prefer}
-  L-type+ = "(:Typ" [1-9]? "+:)" {prefer}
   
   // # Handling variable declarations
                    

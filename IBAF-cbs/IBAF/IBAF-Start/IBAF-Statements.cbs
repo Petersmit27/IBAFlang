@@ -4,23 +4,16 @@ Language "IBAFlang"
 
 Syntax Stmt: statement ::= '{' statement* '}'
                     | 'print' '(' exp ')' ';'
-                    | type id ';'
-                    | type id '=' exp ';'
+                    | id ';'
                     | id '=' exp ';'
                     | 'return' exp? ';'
                     | 'fun' id '(' ')' '{' statement* '}'
-
-Syntax Typ:type ::= 'int'
-                   | 'bool'
-                   | id
-
 
 Semantics execute[[ Stmt*:statement* ]] : => null-type
 
 Rule execute[[ '{' Stmt* '}' ]] = scope(collateral(collect-declared-vars[[ Stmt* ]]), execute[[ Stmt* ]])
 Rule execute[[ 'print' '(' Exp ')' ';' ]] = print eval-exp[[ Exp ]]
-Rule execute[[ Typ Id ';' ]] = null
-Rule execute[[ Typ Id '=' Exp ';' ]] = assign(bound id[[ Id ]], eval-exp[[ Exp ]])
+Rule execute[[ Id ';' ]] = assign(bound id[[ Id ]], 0)
 Rule execute[[ Id '=' Exp ';' ]] = assign(bound id[[ Id ]], eval-exp[[ Exp ]])
 Rule execute[[ 'return' Exp ';' ]] = return eval-exp[[ Exp ]]
 Rule execute[[ 'return' ';' ]] = return null
@@ -36,27 +29,15 @@ Rule execute[[ Stmt Stmt+ ]] = sequential(execute[[ Stmt ]], execute[[ Stmt+ ]])
 
 Semantics collect-declared-vars[[ Stmt*:statement* ]] : (=>environments)+
 
-Rule collect-declared-vars[[ Typ Id '=' Exp ';' ]] = 
-  bind(
-        \"Id\", 
-        allocate-initialised-variable(
-            integers, //TODO: use type
-            0 //TODO: use correct default value for type
-        )
-    )
-Rule collect-declared-vars[[ Typ Id ';' ]] = 
-  bind(
-        \"Id\", 
-        allocate-initialised-variable(
-            integers, //TODO: use type
-            0 //TODO: use correct default value for type
-        )
-    )
-Rule collect-declared-vars[[ 'fun' Id '(' ')' '{' Stmt* '}' ]] = 
-  bind(
-    \"Id\", 
+Rule collect-declared-vars[[ Id '=' Exp ';' ]] = bind(id[[ Id ]], 
+    allocate-variable(integers)
+)
+Rule collect-declared-vars[[ Id ';' ]] = bind(id[[ Id ]], 
+    allocate-variable(integers)
+)
+Rule collect-declared-vars[[ 'fun' Id '(' ')' '{' Stmt* '}' ]] = bind(id[[ Id ]], 
     function abstraction(execute[[ '{' Stmt* '}' ]])
-  )
+)
 Rule collect-declared-vars[[ ]] = map()
 Rule collect-declared-vars[[ Stmt ]] = map()
 Rule collect-declared-vars[[ Stmt1 Stmt2 Stmt* ]] = collect-declared-vars[[ Stmt1 ]], collect-declared-vars[[ Stmt2 ]], collect-declared-vars[[ Stmt* ]]

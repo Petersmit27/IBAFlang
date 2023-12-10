@@ -44,7 +44,7 @@ Rule eval-exp[[ '(' Exp ')' ]] = eval-exp[[ Exp ]]
 
 Lexis Id:id ::= ('a'-'z' | 'A'-'Z') ('a'-'z' | 'A'-'Z' | '0'-'9')*
 
-Semantics id[[ _:id ]] : ids
+Semantics id[[ _:id ]] : identifiers
 Rule id[[ Id ]] = \"Id\"
 
 

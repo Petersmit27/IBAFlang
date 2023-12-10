@@ -24,12 +24,9 @@ to-funcons:
   |[ execute[: print((:Exp:)); :] ]| ->
   |[ print eval-exp[: (:Exp:) :] ]|
 to-funcons:
-  |[ execute[: (:Typ:)(:Id:); :] ]| ->
-  |[ null ]|
-to-funcons:
-  |[ execute[: (:Typ:)(:Id:)=(:Exp:); :] ]| ->
+  |[ execute[: (:Id:); :] ]| ->
   |[ assign (bound id[: (:Id:) :], 
-             eval-exp[: (:Exp:) :]) ]|
+             0) ]|
 to-funcons:
   |[ execute[: (:Id:)=(:Exp:); :] ]| ->
   |[ assign (bound id[: (:Id:) :], 
@@ -55,18 +52,16 @@ to-funcons:
                  
 
 to-funcons:
-  |[ collect-declared-vars[: (:Typ:)(:Id:)=(:Exp:); :] ]| ->
-  |[ bind (\"(:Id:)\", 
-             allocate-initialised-variable (integers, 
-                     0)) ]|
+  |[ collect-declared-vars[: (:Id:)=(:Exp:); :] ]| ->
+  |[ bind (id[: (:Id:) :], 
+             allocate-variable (integers)) ]|
 to-funcons:
-  |[ collect-declared-vars[: (:Typ:)(:Id:); :] ]| ->
-  |[ bind (\"(:Id:)\", 
-             allocate-initialised-variable (integers, 
-                     0)) ]|
+  |[ collect-declared-vars[: (:Id:); :] ]| ->
+  |[ bind (id[: (:Id:) :], 
+             allocate-variable (integers)) ]|
 to-funcons:
   |[ collect-declared-vars[: fun(:Id:)(){(:Stmt*:)} :] ]| ->
-  |[ bind (\"(:Id:)\", 
+  |[ bind (id[: (:Id:) :], 
              function abstraction (execute[: {(:Stmt*:)} :])) ]|
 to-funcons:
   |[ collect-declared-vars[:  :] ]| ->

@@ -4,6 +4,6 @@ fun test() {
     return 3;
 }
 
-int x = test();
+x = test();
 
 print(x);
