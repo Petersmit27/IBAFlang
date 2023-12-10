@@ -1,0 +1,9 @@
+
+
+fun test() {
+    return 3;
+}
+
+int x = test();
+
+print(x);

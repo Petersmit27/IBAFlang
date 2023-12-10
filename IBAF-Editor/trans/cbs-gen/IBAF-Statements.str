@@ -18,7 +18,7 @@ rules
 
 to-funcons:
   |[ execute[: {(:Stmt*:)} :] ]| ->
-  |[ scope (collateral collect-declared-vars[: (:Stmt*:) :], 
+  |[ scope (collateral (collect-declared-vars[: (:Stmt*:) :]), 
              execute[: (:Stmt*:) :]) ]|
 to-funcons:
   |[ execute[: print((:Exp:)); :] ]| ->
@@ -34,6 +34,15 @@ to-funcons:
   |[ execute[: (:Id:)=(:Exp:); :] ]| ->
   |[ assign (bound id[: (:Id:) :], 
              eval-exp[: (:Exp:) :]) ]|
+to-funcons:
+  |[ execute[: return(:Exp:); :] ]| ->
+  |[ return eval-exp[: (:Exp:) :] ]|
+to-funcons:
+  |[ execute[: return; :] ]| ->
+  |[ return null ]|
+to-funcons:
+  |[ execute[: fun(:Id:)(){(:Stmt*:)} :] ]| ->
+  |[ null ]|
 to-funcons:
   |[ execute[:  :] ]| ->
   |[ null ]|
@@ -55,6 +64,10 @@ to-funcons:
   |[ bind (\"(:Id:)\", 
              allocate-initialised-variable (integers, 
                      0)) ]|
+to-funcons:
+  |[ collect-declared-vars[: fun(:Id:)(){(:Stmt*:)} :] ]| ->
+  |[ bind (\"(:Id:)\", 
+             function abstraction (execute[: {(:Stmt*:)} :])) ]|
 to-funcons:
   |[ collect-declared-vars[:  :] ]| ->
   |[ map () ]|

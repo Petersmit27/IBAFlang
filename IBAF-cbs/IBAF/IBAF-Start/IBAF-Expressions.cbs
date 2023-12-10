@@ -37,7 +37,7 @@ Rule eval-exp[[ Exp1 '>=' Exp2 ]] = is-greater-or-equal(eval-exp[[ Exp1 ]], eval
 Rule eval-exp[[ Exp1 '>' Exp2 ]] = is-greater(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
 Rule eval-exp[[ Exp1 '<=' Exp2 ]] = is-less-or-equal(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
 Rule eval-exp[[ Exp1 '<' Exp2 ]] = is-less(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
-Rule eval-exp[[ Id '(' ')' ]] = enact id[[ Id ]]
+Rule eval-exp[[ Id '(' ')' ]] = handle-return apply(bound id[[ Id ]], null)
 Rule eval-exp[[ '(' Exp ')' ]] = eval-exp[[ Exp ]]
 
 

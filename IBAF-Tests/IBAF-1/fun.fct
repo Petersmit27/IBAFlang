@@ -1,0 +1,28 @@
+initialise-binding scope
+  (collateral
+     (bind
+        ("test",
+         function abstraction
+           (scope
+              (collateral
+                 (map
+                    ( )),
+               return decimal-natural
+                 ("3")))),
+      bind
+        ("x",
+         allocate-initialised-variable
+           (integers,
+            0)),
+      map
+        ( )),
+   sequential
+     (null,
+      assign
+        (bound "x",
+         handle-return apply
+           (bound "test",
+            null)),
+      print assigned
+        (bound
+           ("x"))))

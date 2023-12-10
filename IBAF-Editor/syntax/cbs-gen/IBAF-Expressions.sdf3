@@ -66,6 +66,8 @@ context-free syntax // Language
     L-exp "<=" L-exp
   L-exp.L-exp--L-exp-LESS-L-exp =
     L-exp "<" L-exp
+  L-exp.L-exp--L-id-LPAREN-RPAREN =
+    L-id "(" ")"
   L-exp.L-exp--LPAREN-L-exp-RPAREN =
     "(" L-exp ")"
   

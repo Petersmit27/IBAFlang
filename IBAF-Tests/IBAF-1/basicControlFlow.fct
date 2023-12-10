@@ -1,0 +1,39 @@
+initialise-binding scope
+  (collateral
+     (map
+        ( ),
+      bind
+        ("i",
+         allocate-initialised-variable
+           (integers,
+            0)),
+      map
+        ( )),
+   sequential
+     (if-else
+        (true,
+         print true,
+         print false),
+      assign
+        (bound "i",
+         decimal-natural
+           ("0")),
+      while
+        (is-less
+           (assigned
+              (bound
+                 ("i")),
+            decimal-natural
+              ("10")),
+         sequential
+           (assign
+              (bound "i",
+               int-add
+                 (assigned
+                    (bound
+                       ("i")),
+                  decimal-natural
+                    ("1"))),
+            print assigned
+              (bound
+                 ("i"))))))

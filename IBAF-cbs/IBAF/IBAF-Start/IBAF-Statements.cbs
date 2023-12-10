@@ -17,12 +17,12 @@ Syntax Typ:type ::= 'int'
 
 Semantics execute[[ Stmt*:statement* ]] : => null-type
 
-Rule execute[[ '{' Stmt* '}' ]] = scope(collateral collect-declared-vars[[ Stmt* ]], execute[[ Stmt* ]])
+Rule execute[[ '{' Stmt* '}' ]] = scope(collateral(collect-declared-vars[[ Stmt* ]]), execute[[ Stmt* ]])
 Rule execute[[ 'print' '(' Exp ')' ';' ]] = print eval-exp[[ Exp ]]
 Rule execute[[ Typ Id ';' ]] = null
 Rule execute[[ Typ Id '=' Exp ';' ]] = assign(bound id[[ Id ]], eval-exp[[ Exp ]])
 Rule execute[[ Id '=' Exp ';' ]] = assign(bound id[[ Id ]], eval-exp[[ Exp ]])
-Rule execute[[ 'return' Exp ';' ]] = return exal-exp[[ Exp ]]
+Rule execute[[ 'return' Exp ';' ]] = return eval-exp[[ Exp ]]
 Rule execute[[ 'return' ';' ]] = return null
 Rule execute[[ 'fun' Id '(' ')' '{' Stmt* '}' ]] = null
 
@@ -55,7 +55,7 @@ Rule collect-declared-vars[[ Typ Id ';' ]] =
 Rule collect-declared-vars[[ 'fun' Id '(' ')' '{' Stmt* '}' ]] = 
   bind(
     \"Id\", 
-    handle-return function abstraction execute[[ '{' Stmt* '}' ]]
+    function abstraction(execute[[ '{' Stmt* '}' ]])
   )
 Rule collect-declared-vars[[ ]] = map()
 Rule collect-declared-vars[[ Stmt ]] = map()

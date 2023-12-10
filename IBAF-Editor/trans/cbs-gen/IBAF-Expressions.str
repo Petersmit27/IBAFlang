@@ -77,6 +77,10 @@ to-funcons:
   |[ is-less (eval-exp[: (:Exp1:) :], 
              eval-exp[: (:Exp2:) :]) ]|
 to-funcons:
+  |[ eval-exp[: (:Id:)() :] ]| ->
+  |[ handle-return apply (bound id[: (:Id:) :], 
+                    null) ]|
+to-funcons:
   |[ eval-exp[: ((:Exp:)) :] ]| ->
   |[ eval-exp[: (:Exp:) :] ]|
 to-funcons-lex: 

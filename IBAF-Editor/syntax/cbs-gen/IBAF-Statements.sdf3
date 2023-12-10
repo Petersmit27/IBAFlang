@@ -41,6 +41,10 @@ context-free syntax // Language
     L-type L-id "=" L-exp ";"
   L-statement.L-statement--L-id-EQUALS-L-exp-SEMI =
     L-id "=" L-exp ";"
+  L-statement.L-statement--R-return-L-exp-Q-SEMI =
+    "return" L-exp? ";"
+  L-statement.L-statement--R-fun-L-id-LPAREN-RPAREN-LBRACE-L-statement-S-RBRACE =
+    "fun" L-id "(" ")" "{" L-statement* "}"
   
   L-type.L-type--R-int =
     "int"
@@ -87,6 +91,7 @@ variables // Meta-variables
   L-statement? = "(:Stmt" [1-9]? "?:)" {prefer}
   L-statement* = "(:Stmt" [1-9]? "*:)" {prefer}
   L-statement+ = "(:Stmt" [1-9]? "+:)" {prefer}
+  L-statement* = "..." [1-9]? {prefer}
   L-statement* = "..." [1-9]? {prefer}
   L-type = "(:Typ" [1-9]? ":)" {prefer}
   L-type? = "(:Typ" [1-9]? "?:)" {prefer}
