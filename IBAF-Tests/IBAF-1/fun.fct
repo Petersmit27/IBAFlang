@@ -1,28 +1,65 @@
 initialise-binding scope
   (collateral
      (bind
+        ("a",
+         allocate-variable
+           (integers)),
+      bind
         ("test",
          function abstraction
            (scope
               (collateral
                  (map
-                    ( )),
-               return decimal-natural
-                 ("3")))),
+                    ( ),
+                  bind
+                    ("a",
+                     allocate-initialised-variable
+                       (integers,
+                        checked head
+                          given)),
+                  give
+                    (checked tail
+                       given,
+                     bind
+                       ("b",
+                        allocate-initialised-variable
+                          (integers,
+                           checked head
+                             given)))),
+               return int-mul
+                 (assigned
+                    (bound
+                       ("a")),
+                  assigned
+                    (bound
+                       ("b")))))),
       bind
-        ("x",
-         allocate-initialised-variable
-           (integers,
-            0)),
+        ("b",
+         allocate-variable
+           (integers)),
+      map
+        ( ),
       map
         ( )),
    sequential
-     (null,
+     (assign
+        (bound "a",
+         decimal-natural
+           ("20")),
+      null,
       assign
-        (bound "x",
+        (bound "b",
          handle-return apply
            (bound "test",
-            null)),
+            cons
+              (decimal-natural
+                 ("6"),
+               list
+                 (decimal-natural
+                    ("3"))))),
       print assigned
         (bound
-           ("x"))))
+           ("a")),
+      print assigned
+        (bound
+           ("b"))))

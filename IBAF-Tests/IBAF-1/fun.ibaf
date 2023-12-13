@@ -1,9 +1,11 @@
+int a =20;
 
-
-fun test() {
-    return 3;
+fun test(a, b) {
+    return a*b;
 }
 
-x = test();
+int b =test(6, 3);
 
-print(x);
+
+print(a);
+print(b);

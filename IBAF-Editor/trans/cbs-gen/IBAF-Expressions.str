@@ -77,12 +77,22 @@ to-funcons:
   |[ is-less (eval-exp[: (:Exp1:) :], 
              eval-exp[: (:Exp2:) :]) ]|
 to-funcons:
-  |[ eval-exp[: (:Id:)() :] ]| ->
+  |[ eval-exp[: (:Id:)((:ParamValues?:)) :] ]| ->
   |[ handle-return apply (bound id[: (:Id:) :], 
-                    null) ]|
+                    eval-params[: (:ParamValues?:) :]) ]|
 to-funcons:
   |[ eval-exp[: ((:Exp:)) :] ]| ->
   |[ eval-exp[: (:Exp:) :] ]|
+to-funcons:
+  |[ eval-params[:  :] ]| ->
+  |[ [] ]|
+to-funcons:
+  |[ eval-params[: (:Exp:) :] ]| ->
+  |[ list (eval-exp[: (:Exp:) :]) ]|
+to-funcons:
+  |[ eval-params[: (:Exp:),(:ParamValues:) :] ]| ->
+  |[ cons (eval-exp[: (:Exp:) :], 
+             eval-params[: (:ParamValues:) :]) ]|
 to-funcons-lex: 
   FCTDoubleQuoted(L-id(LEX-id(str))) -> 
   FCTString(<double-quote> str)

@@ -4,20 +4,24 @@ Language "IBAFlang"
 
 Syntax Stmt: statement ::= '{' statement* '}'
                     | 'print' '(' exp ')' ';'
-                    | id ';'
+                    | 'int' id ';'
                     | id '=' exp ';'
+                    | 'int' id '=' exp ';'
                     | 'return' exp? ';'
-                    | 'fun' id '(' ')' '{' statement* '}'
+                    | 'fun' id '(' params ')' '{' statement* '}'
+
+Syntax Params: params ::= id (',' params)?
 
 Semantics execute[[ Stmt*:statement* ]] : => null-type
 
 Rule execute[[ '{' Stmt* '}' ]] = scope(collateral(collect-declared-vars[[ Stmt* ]]), execute[[ Stmt* ]])
 Rule execute[[ 'print' '(' Exp ')' ';' ]] = print eval-exp[[ Exp ]]
-Rule execute[[ Id ';' ]] = assign(bound id[[ Id ]], 0)
+Rule execute[[ 'int' Id ';' ]] = assign(bound id[[ Id ]], 0)
 Rule execute[[ Id '=' Exp ';' ]] = assign(bound id[[ Id ]], eval-exp[[ Exp ]])
+Rule execute[[ 'int' Id '=' Exp ';' ]] = assign(bound id[[ Id ]], eval-exp[[ Exp ]])
 Rule execute[[ 'return' Exp ';' ]] = return eval-exp[[ Exp ]]
 Rule execute[[ 'return' ';' ]] = return null
-Rule execute[[ 'fun' Id '(' ')' '{' Stmt* '}' ]] = null
+Rule execute[[ 'fun' Id '(' Params ')' '{' Stmt* '}' ]] = null
 
 Rule execute[[ ]] = null
 Rule execute[[ Stmt Stmt+ ]] = sequential(execute[[ Stmt ]], execute[[ Stmt+ ]])
@@ -25,18 +29,32 @@ Rule execute[[ Stmt Stmt+ ]] = sequential(execute[[ Stmt ]], execute[[ Stmt+ ]])
 
 
 
+# Handling parameter declarations
+
+Semantics collect-params[[ Params:params ]] : (=>environments)+
+Rule collect-params[[ Id ]] = bind(
+        id[[ Id ]], 
+        allocate-initialised-variable(integers, checked head given)
+    )
+Rule collect-params[[ Id ',' Params ]] = collect-params[[ Id ]], give(checked tail given, collect-params[[ Params ]])
+
 # Handling variable declarations
 
 Semantics collect-declared-vars[[ Stmt*:statement* ]] : (=>environments)+
 
-Rule collect-declared-vars[[ Id '=' Exp ';' ]] = bind(id[[ Id ]], 
+Rule collect-declared-vars[[ 'int' Id '=' Exp ';' ]] = bind(id[[ Id ]], 
     allocate-variable(integers)
 )
-Rule collect-declared-vars[[ Id ';' ]] = bind(id[[ Id ]], 
+Rule collect-declared-vars[[ 'int' Id ';' ]] = bind(id[[ Id ]], 
     allocate-variable(integers)
 )
-Rule collect-declared-vars[[ 'fun' Id '(' ')' '{' Stmt* '}' ]] = bind(id[[ Id ]], 
-    function abstraction(execute[[ '{' Stmt* '}' ]])
+Rule collect-declared-vars[[ 'fun' Id '(' Params ')' '{' Stmt* '}' ]] = bind(id[[ Id ]], 
+    function abstraction(
+        scope(
+            collateral(collect-declared-vars[[ Stmt* ]], collect-params[[ Params ]]), 
+            execute[[ Stmt* ]]
+        )
+    )
 )
 Rule collect-declared-vars[[ ]] = map()
 Rule collect-declared-vars[[ Stmt ]] = map()

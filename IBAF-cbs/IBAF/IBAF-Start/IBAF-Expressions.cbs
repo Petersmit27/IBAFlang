@@ -17,8 +17,10 @@ Syntax Exp:exp ::= id
                  | exp '>' exp
                  | exp '<=' exp
                  | exp '<' exp
-                 | id '(' ')'
+                 | id '(' paramvalues? ')'
                  | '(' exp ')'
+
+Syntax ParamValues: paramvalues ::= exp (',' paramvalues)?
 
 Semantics eval-exp[[ _:exp ]] : => values
 Rule eval-exp[[ Id ]] = assigned(bound(id[[ Id ]]))
@@ -37,9 +39,13 @@ Rule eval-exp[[ Exp1 '>=' Exp2 ]] = is-greater-or-equal(eval-exp[[ Exp1 ]], eval
 Rule eval-exp[[ Exp1 '>' Exp2 ]] = is-greater(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
 Rule eval-exp[[ Exp1 '<=' Exp2 ]] = is-less-or-equal(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
 Rule eval-exp[[ Exp1 '<' Exp2 ]] = is-less(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
-Rule eval-exp[[ Id '(' ')' ]] = handle-return apply(bound id[[ Id ]], null)
+Rule eval-exp[[ Id '(' ParamValues? ')' ]] = handle-return apply(bound id[[ Id ]], eval-params[[ ParamValues? ]])
 Rule eval-exp[[ '(' Exp ')' ]] = eval-exp[[ Exp ]]
 
+Semantics eval-params[[ _:paramvalues? ]] : lists(values)
+Rule eval-params[[ ]] = []
+Rule eval-params[[ Exp ]] = list(eval-exp[[ Exp ]])
+Rule eval-params[[ Exp ',' ParamValues ]] = cons(eval-exp[[ Exp ]], eval-params[[ ParamValues ]])
 
 
 Lexis Id:id ::= ('a'-'z' | 'A'-'Z') ('a'-'z' | 'A'-'Z' | '0'-'9')*

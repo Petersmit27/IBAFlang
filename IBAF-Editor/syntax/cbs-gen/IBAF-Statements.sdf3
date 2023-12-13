@@ -12,6 +12,10 @@ lexical syntax // Language
                    
   
   
+  // # Handling parameter declarations
+                   
+  
+  
   // # Handling variable declarations
                    
   
@@ -19,6 +23,10 @@ lexical syntax // Language
 syntax // Language
   
   // # Statements
+                   
+  
+  
+  // # Handling parameter declarations
                    
   
   
@@ -35,14 +43,27 @@ context-free syntax // Language
     "{" L-statement* "}"
   L-statement.L-statement--R-print-LPAREN-L-exp-RPAREN-SEMI =
     "print" "(" L-exp ")" ";"
-  L-statement.L-statement--L-id-SEMI =
-    L-id ";"
+  L-statement.L-statement--R-int-L-id-SEMI =
+    "int" L-id ";"
   L-statement.L-statement--L-id-EQUALS-L-exp-SEMI =
     L-id "=" L-exp ";"
+  L-statement.L-statement--R-int-L-id-EQUALS-L-exp-SEMI =
+    "int" L-id "=" L-exp ";"
   L-statement.L-statement--R-return-L-exp-Q-SEMI =
     "return" L-exp? ";"
-  L-statement.L-statement--R-fun-L-id-LPAREN-RPAREN-LBRACE-L-statement-S-RBRACE =
-    "fun" L-id "(" ")" "{" L-statement* "}"
+  L-statement.L-statement--R-fun-L-id-LPAREN-L-params-RPAREN-LBRACE-L-statement-S-RBRACE =
+    "fun" L-id "(" L-params ")" "{" L-statement* "}"
+  
+  L-params.L-params--L-id-C-COMMA-L-params-D-Q =
+    L-id L-COMMA-L-params?
+  
+  L-COMMA-L-params.L-COMMA-L-params--COMMA-L-params =
+    "," L-params
+  
+  
+  
+  // # Handling parameter declarations
+                   
   
   
   // # Handling variable declarations
@@ -57,6 +78,12 @@ context-free syntax // Semantics
   FCT.T-execute =
     "execute" "[:" L-statement* ":]"
   
+  // # Handling parameter declarations
+                   
+  
+  FCT-SEQ.T-collect-params =
+    "collect-params" "[:" L-params ":]"
+  
   // # Handling variable declarations
                    
   
@@ -66,6 +93,10 @@ context-free syntax // Semantics
 context-free syntax // Desugaring
   
   // # Statements
+                   
+  
+  
+  // # Handling parameter declarations
                    
   
   
@@ -84,6 +115,14 @@ variables // Meta-variables
   L-statement+ = "(:Stmt" [1-9]? "+:)" {prefer}
   L-statement* = "..." [1-9]? {prefer}
   L-statement* = "..." [1-9]? {prefer}
+  L-params = "(:Params" [1-9]? ":)" {prefer}
+  L-params? = "(:Params" [1-9]? "?:)" {prefer}
+  L-params* = "(:Params" [1-9]? "*:)" {prefer}
+  L-params+ = "(:Params" [1-9]? "+:)" {prefer}
+  
+  // # Handling parameter declarations
+                   
+  
   
   // # Handling variable declarations
                    
@@ -92,6 +131,10 @@ variables // Meta-variables
 // SDF comments
   
   // # Statements
+                   
+  
+  
+  // # Handling parameter declarations
                    
   
   

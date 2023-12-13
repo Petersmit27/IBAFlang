@@ -66,10 +66,17 @@ context-free syntax // Language
     L-exp "<=" L-exp
   L-exp.L-exp--L-exp-LESS-L-exp =
     L-exp "<" L-exp
-  L-exp.L-exp--L-id-LPAREN-RPAREN =
-    L-id "(" ")"
+  L-exp.L-exp--L-id-LPAREN-L-paramvalues-Q-RPAREN =
+    L-id "(" L-paramvalues? ")"
   L-exp.L-exp--LPAREN-L-exp-RPAREN =
     "(" L-exp ")"
+  
+  L-paramvalues.L-paramvalues--L-exp-C-COMMA-L-paramvalues-D-Q =
+    L-exp L-COMMA-L-paramvalues?
+  
+  L-COMMA-L-paramvalues.L-COMMA-L-paramvalues--COMMA-L-paramvalues =
+    "," L-paramvalues
+  
   
   L-id.LEX-id =
     LEX-id
@@ -83,6 +90,8 @@ context-free syntax // Semantics
   
   FCT.T-eval-exp =
     "eval-exp" "[:" L-exp ":]"
+  FCT.T-eval-params =
+    "eval-params" "[:" L-paramvalues? ":]"
   FCT-Quoted.L-id = L-id
   FCT.T-id =
     "id" "[:" L-id ":]"
@@ -107,6 +116,10 @@ variables // Meta-variables
   L-exp? = "(:Exp" [1-9]? "?:)" {prefer}
   L-exp* = "(:Exp" [1-9]? "*:)" {prefer}
   L-exp+ = "(:Exp" [1-9]? "+:)" {prefer}
+  L-paramvalues = "(:ParamValues" [1-9]? ":)" {prefer}
+  L-paramvalues? = "(:ParamValues" [1-9]? "?:)" {prefer}
+  L-paramvalues* = "(:ParamValues" [1-9]? "*:)" {prefer}
+  L-paramvalues+ = "(:ParamValues" [1-9]? "+:)" {prefer}
   L-id = "(:Id" [1-9]? ":)" {prefer}
   L-id? = "(:Id" [1-9]? "?:)" {prefer}
   L-id* = "(:Id" [1-9]? "*:)" {prefer}
