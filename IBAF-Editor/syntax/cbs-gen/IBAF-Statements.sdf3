@@ -39,8 +39,8 @@ context-free syntax // Language
   // # Statements
                    
   
-  L-statement.L-statement--LBRACE-L-statement-S-RBRACE =
-    "{" L-statement* "}"
+  L-statement.L-statement--L-block =
+    L-block
   L-statement.L-statement--R-print-LPAREN-L-exp-RPAREN-SEMI =
     "print" "(" L-exp ")" ";"
   L-statement.L-statement--R-int-L-id-SEMI =
@@ -51,8 +51,11 @@ context-free syntax // Language
     "int" L-id "=" L-exp ";"
   L-statement.L-statement--R-return-L-exp-Q-SEMI =
     "return" L-exp? ";"
-  L-statement.L-statement--R-fun-L-id-LPAREN-L-params-RPAREN-LBRACE-L-statement-S-RBRACE =
-    "fun" L-id "(" L-params ")" "{" L-statement* "}"
+  L-statement.L-statement--R-fun-L-id-LPAREN-L-params-RPAREN-L-block =
+    "fun" L-id "(" L-params ")" L-block
+  
+  L-block.L-block--LBRACE-L-statement-S-RBRACE =
+    "{" L-statement* "}"
   
   L-params.L-params--L-id-C-COMMA-L-params-D-Q =
     L-id L-COMMA-L-params?
@@ -77,6 +80,8 @@ context-free syntax // Semantics
   
   FCT.T-execute =
     "execute" "[:" L-statement* ":]"
+  FCT.T-execute-block =
+    "execute-block" "[:" L-block ":]"
   
   // # Handling parameter declarations
                    
@@ -113,7 +118,10 @@ variables // Meta-variables
   L-statement? = "(:Stmt" [1-9]? "?:)" {prefer}
   L-statement* = "(:Stmt" [1-9]? "*:)" {prefer}
   L-statement+ = "(:Stmt" [1-9]? "+:)" {prefer}
-  L-statement* = "..." [1-9]? {prefer}
+  L-block = "(:Block" [1-9]? ":)" {prefer}
+  L-block? = "(:Block" [1-9]? "?:)" {prefer}
+  L-block* = "(:Block" [1-9]? "*:)" {prefer}
+  L-block+ = "(:Block" [1-9]? "+:)" {prefer}
   L-statement* = "..." [1-9]? {prefer}
   L-params = "(:Params" [1-9]? ":)" {prefer}
   L-params? = "(:Params" [1-9]? "?:)" {prefer}

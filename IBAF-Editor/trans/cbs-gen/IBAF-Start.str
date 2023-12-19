@@ -15,5 +15,5 @@ imports
 rules
 to-funcons:
   |[ start[: (:Stmt*:) :] ]| ->
-  |[ initialise-binding execute[: {(:Stmt*:)} :] ]|
+  |[ initialise-binding execute-block[: {(:Stmt*:)} :] ]|
 

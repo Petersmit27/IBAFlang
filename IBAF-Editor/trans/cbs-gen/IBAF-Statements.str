@@ -17,9 +17,8 @@ rules
                  
 
 to-funcons:
-  |[ execute[: {(:Stmt*:)} :] ]| ->
-  |[ scope (collateral (collect-declared-vars[: (:Stmt*:) :]), 
-             execute[: (:Stmt*:) :]) ]|
+  |[ execute[: (:Block:) :] ]| ->
+  |[ execute-block[: (:Block:) :] ]|
 to-funcons:
   |[ execute[: print((:Exp:)); :] ]| ->
   |[ print eval-exp[: (:Exp:) :] ]|
@@ -42,7 +41,7 @@ to-funcons:
   |[ execute[: return; :] ]| ->
   |[ return null ]|
 to-funcons:
-  |[ execute[: fun(:Id:)((:Params:)){(:Stmt*:)} :] ]| ->
+  |[ execute[: fun(:Id:)((:Params:))(:Block:) :] ]| ->
   |[ null ]|
 to-funcons:
   |[ execute[:  :] ]| ->
@@ -51,6 +50,10 @@ to-funcons:
   |[ execute[: (:Stmt:)(:Stmt+:) :] ]| ->
   |[ sequential (execute[: (:Stmt:) :], 
              execute[: (:Stmt+:) :]) ]|
+to-funcons:
+  |[ execute-block[: {(:Stmt*:)} :] ]| ->
+  |[ scope (collateral (collect-declared-vars[: (:Stmt*:) :]), 
+             execute[: (:Stmt*:) :]) ]|
 
 // # Handling parameter declarations
                  
