@@ -53,6 +53,16 @@ context-free syntax // Language
     "return" L-exp? ";"
   L-statement.L-statement--R-fun-L-id-LPAREN-L-params-RPAREN-L-block =
     "fun" L-id "(" L-params ")" L-block
+  L-statement.L-statement--R-if-LPAREN-L-exp-RPAREN-L-block-C-R-else-L-block-D-Q =
+    "if" "(" L-exp ")" L-block L-R-else-L-block?
+  L-statement.L-statement--R-while-LPAREN-L-exp-RPAREN-L-block =
+    "while" "(" L-exp ")" L-block
+  L-statement.L-statement--R-for-LPAREN-R-int-L-id-EQUALS-L-exp-SEMI-L-exp-RPAREN-L-block =
+    "for" "(" "int" L-id "=" L-exp ";" L-exp ")" L-block
+  
+  L-R-else-L-block.L-R-else-L-block--R-else-L-block =
+    "else" L-block
+  
   
   L-block.L-block--LBRACE-L-statement-S-RBRACE =
     "{" L-statement* "}"

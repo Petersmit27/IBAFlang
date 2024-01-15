@@ -6,6 +6,5 @@ fun test(a, b) {
 
 int b =test(6, 3);
 
-
 print(a);
 print(b);

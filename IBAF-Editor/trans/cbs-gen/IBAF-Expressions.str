@@ -100,6 +100,9 @@ to-funcons:
   |[ id[: (:Id:) :] ]| ->
   |[ \"(:Id:)\" ]|
 to-funcons:
+  |[ int-val[: 0 :] ]| ->
+  |[ 0 ]|
+to-funcons:
   |[ int-val[: (:Dec:) :] ]| ->
   |[ dec-val[: (:Dec:) :] ]|
 to-funcons:

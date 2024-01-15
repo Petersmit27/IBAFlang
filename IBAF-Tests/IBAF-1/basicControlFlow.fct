@@ -4,20 +4,28 @@ initialise-binding scope
         ( ),
       bind
         ("i",
-         allocate-initialised-variable
-           (integers,
-            0)),
+         allocate-variable
+           (integers)),
       map
         ( )),
    sequential
      (if-else
         (true,
-         print true,
-         print false),
+         scope
+           (collateral
+              (map
+                 ( )),
+            print true),
+         scope
+           (collateral
+              (map
+                 ( )),
+            print false)),
       assign
         (bound "i",
-         decimal-natural
-           ("0")),
+         integer-negate
+           (decimal-natural
+              ("30"))),
       while
         (is-less
            (assigned
@@ -25,15 +33,23 @@ initialise-binding scope
                  ("i")),
             decimal-natural
               ("10")),
-         sequential
-           (assign
-              (bound "i",
-               int-add
-                 (assigned
-                    (bound
-                       ("i")),
-                  decimal-natural
-                    ("1"))),
-            print assigned
-              (bound
-                 ("i"))))))
+         scope
+           (collateral
+              (map
+                 ( ),
+               map
+                 ( ),
+               map
+                 ( )),
+            sequential
+              (assign
+                 (bound "i",
+                  int-add
+                    (assigned
+                       (bound
+                          ("i")),
+                     decimal-natural
+                       ("1"))),
+               print assigned
+                 (bound
+                    ("i")))))))

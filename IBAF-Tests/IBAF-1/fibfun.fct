@@ -1,0 +1,95 @@
+initialise-binding scope
+  (collateral
+     (bind
+        ("fib",
+         function abstraction
+           (scope
+              (collateral
+                 (map
+                    ( ),
+                  map
+                    ( ),
+                  map
+                    ( ),
+                  bind
+                    ("n",
+                     allocate-initialised-variable
+                       (integers,
+                        checked head
+                          given))),
+               sequential
+                 (if-else
+                    (is-less-or-equal
+                       (assigned
+                          (bound
+                             ("n")),
+                        decimal-natural
+                          ("1")),
+                     scope
+                       (collateral
+                          (map
+                             ( )),
+                        return assigned
+                          (bound
+                             ("n"))),
+                     null),
+                  return int-add
+                    (handle-return apply
+                       (bound "fib",
+                        list
+                          (integer-subtract
+                             (assigned
+                                (bound
+                                   ("n")),
+                              decimal-natural
+                                ("1")))),
+                     handle-return apply
+                       (bound "fib",
+                        list
+                          (integer-subtract
+                             (assigned
+                                (bound
+                                   ("n")),
+                              decimal-natural
+                                ("2"))))))))),
+      bind
+        ("n",
+         allocate-variable
+           (integers)),
+      map
+        ( )),
+   sequential
+     (null,
+      assign
+        (bound "n",
+         0),
+      while
+        (is-less
+           (assigned
+              (bound
+                 ("n")),
+            decimal-natural
+              ("8")),
+         scope
+           (collateral
+              (map
+                 ( ),
+               map
+                 ( ),
+               map
+                 ( )),
+            sequential
+              (print handle-return apply
+                 (bound "fib",
+                  list
+                    (assigned
+                       (bound
+                          ("n")))),
+               assign
+                 (bound "n",
+                  int-add
+                    (assigned
+                       (bound
+                          ("n")),
+                     decimal-natural
+                       ("1"))))))))

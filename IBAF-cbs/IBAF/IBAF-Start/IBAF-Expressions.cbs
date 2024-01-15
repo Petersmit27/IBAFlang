@@ -57,7 +57,7 @@ Rule id[[ Id ]] = \"Id\"
 Syntax Int:int ::= '0' | ('-'?_decimal)
 
 Semantics int-val[[ _:int ]] : ints
-Rule int-val[[ '0' ]] = decimal-natural(\"0\")
+Rule int-val[[ '0' ]] = 0
 Rule int-val[[ Dec ]] = dec-val[[ Dec ]]
 Rule int-val[[ '-' Dec ]] = integer-negate(dec-val[[ Dec ]])
 

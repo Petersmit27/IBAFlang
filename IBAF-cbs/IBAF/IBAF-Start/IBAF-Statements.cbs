@@ -9,6 +9,9 @@ Syntax Stmt: statement ::= block
                          | 'int' id '=' exp ';'
                          | 'return' exp? ';'
                          | 'fun' id '(' params ')' block
+                         | 'if' '(' exp ')' block ('else' block)?
+                         | 'while' '(' exp ')' block
+                         | 'for' '(' 'int' id '=' exp ';' exp ')' block
 
 Syntax Block: block ::= '{' statement* '}'                    
 
@@ -24,6 +27,14 @@ Rule execute[[ 'int' Id '=' Exp ';' ]] = assign(bound id[[ Id ]], eval-exp[[ Exp
 Rule execute[[ 'return' Exp ';' ]] = return eval-exp[[ Exp ]]
 Rule execute[[ 'return' ';' ]] = return null
 Rule execute[[ 'fun' Id '(' Params ')' Block ]] = null
+Rule execute[[ 'if' '(' Exp ')' Block ]] = if-else(eval-exp[[ Exp ]], execute-block[[ Block ]], null)
+Rule execute[[ 'if' '(' Exp ')' Block1 'else' Block2 ]] = if-else(eval-exp[[ Exp ]], execute-block[[ Block1 ]], execute-block[[ Block2 ]])
+Rule execute[[ 'while' '(' Exp ')' Block ]] = while(eval-exp[[ Exp ]], execute-block[[ Block ]])
+Rule execute[[ 'for' '(' 'int' Id '=' Exp1 ';' Exp2 ')' Block ]] = scope(
+    bind(id[[ Id ]], allocate-initialised-variable(integers, eval-exp[[ Exp1 ]])),
+    //    while(eval-exp[[ Exp2 ]], sequential(execute-block[[ Block ]], increment Id))
+    while(eval-exp[[ Exp2 ]], sequential(execute-block[[ Block ]], assign(bound id[[ Id ]], int-add(1,assigned bound id[[ Id ]]))))
+)
 
 Rule execute[[ ]] = null
 Rule execute[[ Stmt Stmt+ ]] = sequential(execute[[ Stmt ]], execute[[ Stmt+ ]])
@@ -41,6 +52,8 @@ Rule collect-params[[ Id ]] = bind(
         allocate-initialised-variable(integers, checked head given)
     )
 Rule collect-params[[ Id ',' Params ]] = collect-params[[ Id ]], give(checked tail given, collect-params[[ Params ]])
+
+
 
 # Handling variable declarations
 

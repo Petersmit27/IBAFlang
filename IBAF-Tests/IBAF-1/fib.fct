@@ -1,0 +1,84 @@
+initialise-binding scope
+  (collateral
+     (bind
+        ("curr",
+         allocate-variable
+           (integers)),
+      bind
+        ("prev1",
+         allocate-variable
+           (integers)),
+      bind
+        ("prev2",
+         allocate-variable
+           (integers)),
+      bind
+        ("n",
+         allocate-variable
+           (integers)),
+      map
+        ( )),
+   sequential
+     (assign
+        (bound "curr",
+         0),
+      assign
+        (bound "prev1",
+         decimal-natural
+           ("1")),
+      assign
+        (bound "prev2",
+         0),
+      assign
+        (bound "n",
+         decimal-natural
+           ("7")),
+      while
+        (is-greater-or-equal
+           (assigned
+              (bound
+                 ("n")),
+            0),
+         scope
+           (collateral
+              (map
+                 ( ),
+               map
+                 ( ),
+               map
+                 ( ),
+               map
+                 ( ),
+               map
+                 ( )),
+            sequential
+              (assign
+                 (bound "curr",
+                  int-add
+                    (assigned
+                       (bound
+                          ("prev2")),
+                     assigned
+                       (bound
+                          ("prev1")))),
+               assign
+                 (bound "prev1",
+                  assigned
+                    (bound
+                       ("prev2"))),
+               assign
+                 (bound "prev2",
+                  assigned
+                    (bound
+                       ("curr"))),
+               print assigned
+                 (bound
+                    ("curr")),
+               assign
+                 (bound "n",
+                  integer-subtract
+                    (assigned
+                       (bound
+                          ("n")),
+                     decimal-natural
+                       ("1"))))))))
