@@ -39,6 +39,9 @@ context-free syntax // Language
   // # Statements
                    
   
+  L-block.L-block--LBRACE-L-statement-S-RBRACE =
+    "{" L-statement* "}"
+  
   L-statement.L-statement--L-block =
     L-block
   L-statement.L-statement--R-print-LPAREN-L-exp-RPAREN-SEMI =
@@ -63,9 +66,6 @@ context-free syntax // Language
   L-R-else-L-block.L-R-else-L-block--R-else-L-block =
     "else" L-block
   
-  
-  L-block.L-block--LBRACE-L-statement-S-RBRACE =
-    "{" L-statement* "}"
   
   L-params.L-params--L-id-C-COMMA-L-params-D-Q =
     L-id L-COMMA-L-params?
@@ -124,15 +124,15 @@ variables // Meta-variables
   // # Statements
                    
   
-  L-statement = "(:Stmt" [1-9]? ":)" {prefer}
-  L-statement? = "(:Stmt" [1-9]? "?:)" {prefer}
-  L-statement* = "(:Stmt" [1-9]? "*:)" {prefer}
-  L-statement+ = "(:Stmt" [1-9]? "+:)" {prefer}
   L-block = "(:Block" [1-9]? ":)" {prefer}
   L-block? = "(:Block" [1-9]? "?:)" {prefer}
   L-block* = "(:Block" [1-9]? "*:)" {prefer}
   L-block+ = "(:Block" [1-9]? "+:)" {prefer}
   L-statement* = "..." [1-9]? {prefer}
+  L-statement = "(:Stmt" [1-9]? ":)" {prefer}
+  L-statement? = "(:Stmt" [1-9]? "?:)" {prefer}
+  L-statement* = "(:Stmt" [1-9]? "*:)" {prefer}
+  L-statement+ = "(:Stmt" [1-9]? "+:)" {prefer}
   L-params = "(:Params" [1-9]? ":)" {prefer}
   L-params? = "(:Params" [1-9]? "?:)" {prefer}
   L-params* = "(:Params" [1-9]? "*:)" {prefer}

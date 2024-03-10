@@ -38,14 +38,22 @@ context-free syntax // Language
     L-id
   L-exp.L-exp--L-int =
     L-int
-  L-exp.L-exp--R-true =
-    "true"
-  L-exp.L-exp--R-false =
-    "false"
   L-exp.L-exp--L-exp-PLUS-L-exp =
     L-exp "+" L-exp
   L-exp.L-exp--L-exp-DASH-L-exp =
     L-exp "-" L-exp
+  L-exp.L-exp--L-exp-LESS-EQUALS-L-exp =
+    L-exp "<=" L-exp
+  L-exp.L-exp--L-exp-LESS-L-exp =
+    L-exp "<" L-exp
+  L-exp.L-exp--L-id-LPAREN-L-paramvalues-Q-RPAREN =
+    L-id "(" L-paramvalues? ")"
+  L-exp.L-exp--LPAREN-L-exp-RPAREN =
+    "(" L-exp ")"
+  L-exp.L-exp--R-true =
+    "true"
+  L-exp.L-exp--R-false =
+    "false"
   L-exp.L-exp--L-exp-STAR-L-exp =
     L-exp "*" L-exp
   L-exp.L-exp--L-exp-SLASH-L-exp =
@@ -62,14 +70,6 @@ context-free syntax // Language
     L-exp ">=" L-exp
   L-exp.L-exp--L-exp-GREATER-L-exp =
     L-exp ">" L-exp
-  L-exp.L-exp--L-exp-LESS-EQUALS-L-exp =
-    L-exp "<=" L-exp
-  L-exp.L-exp--L-exp-LESS-L-exp =
-    L-exp "<" L-exp
-  L-exp.L-exp--L-id-LPAREN-L-paramvalues-Q-RPAREN =
-    L-id "(" L-paramvalues? ")"
-  L-exp.L-exp--LPAREN-L-exp-RPAREN =
-    "(" L-exp ")"
   
   L-paramvalues.L-paramvalues--L-exp-C-COMMA-L-paramvalues-D-Q =
     L-exp L-COMMA-L-paramvalues?

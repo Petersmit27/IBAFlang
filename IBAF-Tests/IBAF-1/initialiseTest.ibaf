@@ -8,4 +8,6 @@ print(x);
     print(y);
 }
 
-print(x);
+print(y);
+
+//int x = 1;

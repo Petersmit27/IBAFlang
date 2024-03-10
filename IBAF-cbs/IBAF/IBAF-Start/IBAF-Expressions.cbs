@@ -3,10 +3,14 @@ Language "IBAFlang"
 # 1: General expressions
 Syntax Exp:exp ::= id
                  | int
-                 | 'true'
-                 | 'false'
                  | exp '+' exp
                  | exp '-' exp
+                 | exp '<=' exp
+                 | exp '<' exp
+                 | id '(' paramvalues? ')'
+                 | '(' exp ')'
+                 | 'true'
+                 | 'false'
                  | exp '*' exp
                  | exp '/' exp
                  | exp '%' exp
@@ -15,10 +19,6 @@ Syntax Exp:exp ::= id
                  | exp '==' exp
                  | exp '>=' exp
                  | exp '>' exp
-                 | exp '<=' exp
-                 | exp '<' exp
-                 | id '(' paramvalues? ')'
-                 | '(' exp ')'
 
 Syntax ParamValues: paramvalues ::= exp (',' paramvalues)?
 
@@ -33,7 +33,7 @@ Rule eval-exp[[ Exp1 '*' Exp2 ]] = int-mul(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]
 Rule eval-exp[[ Exp1 '/' Exp2 ]] = checked int-div(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
 Rule eval-exp[[ Exp1 '%' Exp2 ]] = checked int-mod(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
 Rule eval-exp[[ Exp1 '&&' Exp2 ]] = and(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
-Rule eval-exp[[ Exp1 '||' Exp2 ]] = and(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
+Rule eval-exp[[ Exp1 '||' Exp2 ]] = or(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
 Rule eval-exp[[ Exp1 '==' Exp2 ]] = is-equal(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
 Rule eval-exp[[ Exp1 '>=' Exp2 ]] = is-greater-or-equal(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
 Rule eval-exp[[ Exp1 '>' Exp2 ]] = is-greater(eval-exp[[ Exp1 ]], eval-exp[[ Exp2]] )
@@ -43,7 +43,7 @@ Rule eval-exp[[ Id '(' ParamValues? ')' ]] = handle-return apply(bound id[[ Id ]
 Rule eval-exp[[ '(' Exp ')' ]] = eval-exp[[ Exp ]]
 
 Semantics eval-params[[ _:paramvalues? ]] : lists(values)
-Rule eval-params[[ ]] = []
+Rule eval-params[[ ]] = list()
 Rule eval-params[[ Exp ]] = list(eval-exp[[ Exp ]])
 Rule eval-params[[ Exp ',' ParamValues ]] = cons(eval-exp[[ Exp ]], eval-params[[ ParamValues ]])
 

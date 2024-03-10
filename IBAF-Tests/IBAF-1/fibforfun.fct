@@ -70,7 +70,7 @@ initialise-binding scope
                  (bound
                     ("n")),
                decimal-natural
-                 ("8")),
+                 ("5")),
             sequential
               (scope
                  (collateral

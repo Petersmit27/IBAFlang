@@ -69,7 +69,7 @@ initialise-binding scope
               (bound
                  ("n")),
             decimal-natural
-              ("8")),
+              ("5")),
          scope
            (collateral
               (map

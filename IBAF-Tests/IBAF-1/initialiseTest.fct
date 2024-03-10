@@ -61,4 +61,4 @@ initialise-binding scope
                  ("y")))),
       print assigned
         (bound
-           ("x"))))
+           ("y"))))

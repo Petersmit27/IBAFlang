@@ -5,9 +5,10 @@ fun fib(n) {
     return fib(n-1) + fib(n-2);
 }
 
+
 int n = 0;
 
-while (n < 8) {
+while (n < 5) {
     print(fib(n));
     n = n + 1;
 }
