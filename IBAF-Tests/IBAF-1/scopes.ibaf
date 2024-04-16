@@ -1,11 +1,13 @@
 int x =10*10;
-print(x);
 
 {
-    int x = 10;
     int y = x*x;
     print(x);
     print(y);
 }
 
-print(x);
+if(false){
+    int y =0;
+}
+
+print(y);

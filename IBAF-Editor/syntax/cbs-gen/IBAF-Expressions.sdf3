@@ -11,13 +11,37 @@ lexical syntax // Language
   // # 1: General expressions
                    
   
+  
+  // ## Handling expressions for function calls
+                   
+  
+  
+  // ## Ids
+                   
+  
   LEX-id = ( [a-z] | [A-Z] ) ( [a-z] | [A-Z] | [0-9] )*
+  
+  // ## Integers and decimals
+                   
+  
   LEX-DASH = "-"
   LEX-decimal = [1-9] ( [0-9] )*
   
 syntax // Language
   
   // # 1: General expressions
+                   
+  
+  
+  // ## Handling expressions for function calls
+                   
+  
+  
+  // ## Ids
+                   
+  
+  
+  // ## Integers and decimals
                    
   
   L-int-CF.L-int--R-0 =
@@ -71,6 +95,10 @@ context-free syntax // Language
   L-exp.L-exp--L-exp-GREATER-L-exp =
     L-exp ">" L-exp
   
+  
+  // ## Handling expressions for function calls
+                   
+  
   L-paramvalues.L-paramvalues--L-exp-C-COMMA-L-paramvalues-D-Q =
     L-exp L-COMMA-L-paramvalues?
   
@@ -78,8 +106,16 @@ context-free syntax // Language
     "," L-paramvalues
   
   
+  
+  // ## Ids
+                   
+  
   L-id.LEX-id =
     LEX-id
+  
+  // ## Integers and decimals
+                   
+  
   L-decimal.LEX-decimal =
     LEX-decimal
   
@@ -90,11 +126,23 @@ context-free syntax // Semantics
   
   FCT.T-eval-exp =
     "eval-exp" "[:" L-exp ":]"
+  
+  // ## Handling expressions for function calls
+                   
+  
   FCT.T-eval-params =
     "eval-params" "[:" L-paramvalues? ":]"
+  
+  // ## Ids
+                   
+  
   FCT-Quoted.L-id = L-id
   FCT.T-id =
     "id" "[:" L-id ":]"
+  
+  // ## Integers and decimals
+                   
+  
   FCT.T-int-val =
     "int-val" "[:" L-int ":]"
   FCT-Quoted.L-decimal = L-decimal
@@ -107,6 +155,18 @@ context-free syntax // Desugaring
                    
   
   
+  // ## Handling expressions for function calls
+                   
+  
+  
+  // ## Ids
+                   
+  
+  
+  // ## Integers and decimals
+                   
+  
+  
 variables // Meta-variables
   
   // # 1: General expressions
@@ -116,14 +176,26 @@ variables // Meta-variables
   L-exp? = "(:Exp" [1-9]? "?:)" {prefer}
   L-exp* = "(:Exp" [1-9]? "*:)" {prefer}
   L-exp+ = "(:Exp" [1-9]? "+:)" {prefer}
+  
+  // ## Handling expressions for function calls
+                   
+  
   L-paramvalues = "(:ParamValues" [1-9]? ":)" {prefer}
   L-paramvalues? = "(:ParamValues" [1-9]? "?:)" {prefer}
   L-paramvalues* = "(:ParamValues" [1-9]? "*:)" {prefer}
   L-paramvalues+ = "(:ParamValues" [1-9]? "+:)" {prefer}
+  
+  // ## Ids
+                   
+  
   L-id = "(:Id" [1-9]? ":)" {prefer}
   L-id? = "(:Id" [1-9]? "?:)" {prefer}
   L-id* = "(:Id" [1-9]? "*:)" {prefer}
   L-id+ = "(:Id" [1-9]? "+:)" {prefer}
+  
+  // ## Integers and decimals
+                   
+  
   L-int = "(:Int" [1-9]? ":)" {prefer}
   L-int? = "(:Int" [1-9]? "?:)" {prefer}
   L-int* = "(:Int" [1-9]? "*:)" {prefer}
@@ -136,6 +208,18 @@ variables // Meta-variables
 // SDF comments
   
   // # 1: General expressions
+                   
+  
+  
+  // ## Handling expressions for function calls
+                   
+  
+  
+  // ## Ids
+                   
+  
+  
+  // ## Integers and decimals
                    
   
   

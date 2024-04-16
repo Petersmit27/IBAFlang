@@ -8,7 +8,7 @@ fun fib(n) {
 
 int n = 0;
 
-while (n < 5) {
+while (n < 8) {
     print(fib(n));
     n = n + 1;
 }

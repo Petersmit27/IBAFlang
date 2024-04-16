@@ -1,13 +1,15 @@
-int x =10*10;
-print(x);
+//y = 100;
+//print y;
 
-{
-    int x = 10;
+int x =10*10;
+print x;
+int y = 5;
+
+if(true){
+//    int x = 10;
     int y = x*x;
-    print(x);
-    print(y);
+    print x;
+    print y;
 }
 
-print(y);
-
-//int x = 1;
+print y;

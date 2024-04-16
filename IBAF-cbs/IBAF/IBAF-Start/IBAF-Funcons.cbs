@@ -1,5 +1,5 @@
 Funcon increment(Id:ids) : => values 
-    ~> assign(bound(\"Id\"), int-add(assigned(bound(\"Id\")), 1))
+    ~> assign(bound(Id), int-add(assigned(bound(Id)), 1))
 
 Funcon
   print-line(S:strings) : => null-type

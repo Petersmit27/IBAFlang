@@ -45,13 +45,5 @@ variables // Meta-variables
   lexical restrictions
     LEX-id -/- [A-Za-z0-9]
   
-  context-free syntax
-  L-exp.L-exp--L-exp-PLUS-L-exp =
-    L-exp "+" L-exp
-    {assoc}
-  L-exp.L-exp--L-exp-AMPERSAND-AMPERSAND-L-exp =
-    L-exp "&&" L-exp
-   {assoc}
-  
 sorts // ASTs
   T-start

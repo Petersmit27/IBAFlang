@@ -20,11 +20,12 @@ to-funcons:
   |[ execute[: (:Block:) :] ]| ->
   |[ execute-block[: (:Block:) :] ]|
 to-funcons:
-  |[ execute[: print((:Exp:)); :] ]| ->
-  |[ print eval-exp[: (:Exp:) :] ]|
+  |[ execute[: print(:Exp:); :] ]| ->
+  |[ print (to-string eval-exp[: (:Exp:) :], 
+             "\n") ]|
 to-funcons:
   |[ execute[: int(:Id:); :] ]| ->
-  |[ assign (bound id[: (:Id:) :], 
+  |[ initialise-variable (bound id[: (:Id:) :], 
              0) ]|
 to-funcons:
   |[ execute[: (:Id:)=(:Exp:); :] ]| ->
@@ -32,7 +33,7 @@ to-funcons:
              eval-exp[: (:Exp:) :]) ]|
 to-funcons:
   |[ execute[: int(:Id:)=(:Exp:); :] ]| ->
-  |[ assign (bound id[: (:Id:) :], 
+  |[ initialise-variable (bound id[: (:Id:) :], 
              eval-exp[: (:Exp:) :]) ]|
 to-funcons:
   |[ execute[: return(:Exp:); :] ]| ->
@@ -58,16 +59,6 @@ to-funcons:
   |[ while (eval-exp[: (:Exp:) :], 
              execute-block[: (:Block:) :]) ]|
 to-funcons:
-  |[ execute[: for(int(:Id:)=(:Exp1:);(:Exp2:))(:Block:) :] ]| ->
-  |[ scope (bind (id[: (:Id:) :], 
-                     allocate-initialised-variable (integers, 
-                             eval-exp[: (:Exp1:) :])), 
-             while (eval-exp[: (:Exp2:) :], 
-                     sequential (execute-block[: (:Block:) :], 
-                             assign (bound id[: (:Id:) :], 
-                                     int-add (1, 
-                                             assigned bound id[: (:Id:) :]))))) ]|
-to-funcons:
   |[ execute[:  :] ]| ->
   |[ null ]|
 to-funcons:
@@ -76,8 +67,7 @@ to-funcons:
              execute[: (:Stmt+:) :]) ]|
 to-funcons:
   |[ execute-block[: {(:Stmt*:)} :] ]| ->
-  |[ scope (collateral (collect-declared-vars[: (:Stmt*:) :]), 
-             execute[: (:Stmt*:) :]) ]|
+  |[ execute[: (:Stmt*:) :] ]|
 
 // # Handling parameter declarations
                  
@@ -110,6 +100,19 @@ to-funcons:
              function abstraction (scope (collateral (collect-declared-vars[: (:Stmt*:) :], 
                                             collect-params[: (:Params:) :]), 
                                     execute[: (:Stmt*:) :]))) ]|
+to-funcons:
+  |[ collect-declared-vars[: {(:Stmt*:)} :] ]| ->
+  |[ collect-declared-vars[: (:Stmt*:) :] ]|
+to-funcons:
+  |[ collect-declared-vars[: if((:Exp:))(:Block:) :] ]| ->
+  |[ collect-declared-vars[: (:Block:) :] ]|
+to-funcons:
+  |[ collect-declared-vars[: if((:Exp:))(:Block1:)else(:Block2:) :] ]| ->
+  |[ collect-declared-vars[: (:Block1:) :], 
+     collect-declared-vars[: (:Block2:) :] ]|
+to-funcons:
+  |[ collect-declared-vars[: while((:Exp:))(:Block:) :] ]| ->
+  |[ collect-declared-vars[: (:Block:) :] ]|
 to-funcons:
   |[ collect-declared-vars[:  :] ]| ->
   |[ map () ]|

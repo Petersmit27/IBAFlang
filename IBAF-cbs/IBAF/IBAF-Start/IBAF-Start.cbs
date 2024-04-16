@@ -2,7 +2,7 @@ Language "IBAFlang"
     
 Syntax START:start ::= statement*
 Semantics start[[ _:start ]] : =>null-type
-Rule start[[ Stmt* ]] = initialise-binding execute-block[[ '{' Stmt* '}' ]]
+Rule start[[ Stmt* ]] = initialise-binding scope(collateral(collect-declared-vars[[ Stmt* ]]), execute[[ Stmt* ]])
 
 
 
@@ -15,11 +15,4 @@ lexical syntax
   ``id`` = ``keyword`` {reject}
 lexical restrictions
   ``id`` -/- [A-Za-z0-9]
-*/
-
-Syntax SDF
-/*
-context-free syntax
-``exp ::= exp '+' exp``  {assoc}
-``exp ::= exp '&&' exp`` {assoc}
 */

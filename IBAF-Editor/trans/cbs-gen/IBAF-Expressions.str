@@ -18,7 +18,7 @@ rules
 
 to-funcons:
   |[ eval-exp[: (:Id:) :] ]| ->
-  |[ assigned (bound (id[: (:Id:) :])) ]|
+  |[ assigned bound id[: (:Id:) :] ]|
 to-funcons:
   |[ eval-exp[: (:Int:) :] ]| ->
   |[ int-val[: (:Int:) :] ]|
@@ -83,6 +83,10 @@ to-funcons:
 to-funcons:
   |[ eval-exp[: ((:Exp:)) :] ]| ->
   |[ eval-exp[: (:Exp:) :] ]|
+
+// ## Handling expressions for function calls
+                 
+
 to-funcons:
   |[ eval-params[:  :] ]| ->
   |[ list () ]|
@@ -93,12 +97,20 @@ to-funcons:
   |[ eval-params[: (:Exp:),(:ParamValues:) :] ]| ->
   |[ cons (eval-exp[: (:Exp:) :], 
              eval-params[: (:ParamValues:) :]) ]|
+
+// ## Ids
+                 
+
 to-funcons-lex: 
   FCTDoubleQuoted(L-id(LEX-id(str))) -> 
   FCTString(<double-quote> str)
 to-funcons:
   |[ id[: (:Id:) :] ]| ->
   |[ \"(:Id:)\" ]|
+
+// ## Integers and decimals
+                 
+
 to-funcons:
   |[ int-val[: 0 :] ]| ->
   |[ 0 ]|

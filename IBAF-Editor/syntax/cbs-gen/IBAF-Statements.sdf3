@@ -44,8 +44,8 @@ context-free syntax // Language
   
   L-statement.L-statement--L-block =
     L-block
-  L-statement.L-statement--R-print-LPAREN-L-exp-RPAREN-SEMI =
-    "print" "(" L-exp ")" ";"
+  L-statement.L-statement--R-print-L-exp-SEMI =
+    "print" L-exp ";"
   L-statement.L-statement--R-int-L-id-SEMI =
     "int" L-id ";"
   L-statement.L-statement--L-id-EQUALS-L-exp-SEMI =
@@ -60,8 +60,6 @@ context-free syntax // Language
     "if" "(" L-exp ")" L-block L-R-else-L-block?
   L-statement.L-statement--R-while-LPAREN-L-exp-RPAREN-L-block =
     "while" "(" L-exp ")" L-block
-  L-statement.L-statement--R-for-LPAREN-R-int-L-id-EQUALS-L-exp-SEMI-L-exp-RPAREN-L-block =
-    "for" "(" "int" L-id "=" L-exp ";" L-exp ")" L-block
   
   L-R-else-L-block.L-R-else-L-block--R-else-L-block =
     "else" L-block

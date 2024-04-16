@@ -4,61 +4,56 @@ initialise-binding scope
         ("x",
          allocate-variable
            (integers)),
+      bind
+        ("y",
+         allocate-variable
+           (integers)),
       map
         ( ),
       map
         ( ),
+      bind
+        ("y",
+         allocate-variable
+           (integers)),
       map
         ( ),
       map
         ( )),
    sequential
-     (assign
+     (initialise-variable
         (bound "x",
          int-mul
            (decimal-natural
               ("10"),
             decimal-natural
               ("10"))),
-      print assigned
-        (bound
-           ("x")),
-      scope
-        (collateral
-           (bind
-              ("x",
-               allocate-variable
-                 (integers)),
-            bind
-              ("y",
-               allocate-variable
-                 (integers)),
-            map
-              ( ),
-            map
-              ( ),
-            map
-              ( )),
-         sequential
-           (assign
-              (bound "x",
-               decimal-natural
-                 ("10")),
-            assign
-              (bound "y",
-               int-mul
-                 (assigned
-                    (bound
-                       ("x")),
-                  assigned
-                    (bound
-                       ("x")))),
-            print assigned
-              (bound
-                 ("x")),
-            print assigned
-              (bound
-                 ("y")))),
-      print assigned
-        (bound
-           ("x"))))
+      sequential
+        (initialise-variable
+           (bound "y",
+            int-mul
+              (assigned bound
+                 "x",
+               assigned bound
+                 "x")),
+         print
+           (to-string assigned bound
+              "x",
+            "
+"),
+         print
+           (to-string assigned bound
+              "y",
+            "
+")),
+      if-else
+        (false,
+         initialise-variable
+           (bound "y",
+            0),
+         null),
+      print
+        (to-string assigned bound
+           "y",
+         "
+")))

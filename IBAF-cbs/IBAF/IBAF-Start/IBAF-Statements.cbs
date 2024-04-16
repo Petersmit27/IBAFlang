@@ -5,7 +5,7 @@ Language "IBAFlang"
 Syntax Block: block ::= '{' statement* '}'
 
 Syntax Stmt: statement ::= block
-                         | 'print' '(' exp ')' ';'
+                         | 'print' exp ';'
                          | 'int' id ';'
                          | id '=' exp ';'
                          | 'int' id '=' exp ';'
@@ -13,34 +13,29 @@ Syntax Stmt: statement ::= block
                          | 'fun' id '(' params ')' block
                          | 'if' '(' exp ')' block ('else' block)?
                          | 'while' '(' exp ')' block
-                         | 'for' '(' 'int' id '=' exp ';' exp ')' block
 
 
 Syntax Params: params ::= id (',' params)?
 
-Semantics execute[[ Stmt*:statement* ]] : => null-type
+Semantics execute[[ Stmt*:statement* ]] : =>null-type
 
 Rule execute[[ Block ]] = execute-block[[ Block ]]
-Rule execute[[ 'print' '(' Exp ')' ';' ]] = print eval-exp[[ Exp ]]
-Rule execute[[ 'int' Id ';' ]] = assign(bound id[[ Id ]], 0)
+Rule execute[[ 'print' Exp ';' ]] = print(to-string eval-exp[[ Exp ]], "\n")
+Rule execute[[ 'int' Id ';' ]] = initialise-variable(bound id[[ Id ]], 0)
 Rule execute[[ Id '=' Exp ';' ]] = assign(bound id[[ Id ]], eval-exp[[ Exp ]])
-Rule execute[[ 'int' Id '=' Exp ';' ]] = assign(bound id[[ Id ]], eval-exp[[ Exp ]])
+Rule execute[[ 'int' Id '=' Exp ';' ]] = initialise-variable(bound id[[ Id ]], eval-exp[[ Exp ]])
 Rule execute[[ 'return' Exp ';' ]] = return eval-exp[[ Exp ]]
 Rule execute[[ 'return' ';' ]] = return null
 Rule execute[[ 'fun' Id '(' Params ')' Block ]] = null
 Rule execute[[ 'if' '(' Exp ')' Block ]] = if-else(eval-exp[[ Exp ]], execute-block[[ Block ]], null)
 Rule execute[[ 'if' '(' Exp ')' Block1 'else' Block2 ]] = if-else(eval-exp[[ Exp ]], execute-block[[ Block1 ]], execute-block[[ Block2 ]])
 Rule execute[[ 'while' '(' Exp ')' Block ]] = while(eval-exp[[ Exp ]], execute-block[[ Block ]])
-Rule execute[[ 'for' '(' 'int' Id '=' Exp1 ';' Exp2 ')' Block ]] = scope(
-    bind(id[[ Id ]], allocate-initialised-variable(integers, eval-exp[[ Exp1 ]])),
-    while(eval-exp[[ Exp2 ]], sequential(execute-block[[ Block ]], assign(bound id[[ Id ]], int-add(1, assigned bound id[[ Id ]]))))
-)
 
 Rule execute[[ ]] = null
 Rule execute[[ Stmt Stmt+ ]] = sequential(execute[[ Stmt ]], execute[[ Stmt+ ]])
 
-Semantics execute-block[[ _:block ]] : => null-type
-Rule execute-block[[ '{' Stmt* '}' ]] = scope(collateral(collect-declared-vars[[ Stmt* ]]), execute[[ Stmt* ]])
+Semantics execute-block[[ _:block ]] : =>null-type
+Rule execute-block[[ '{' Stmt* '}' ]] = execute[[ Stmt* ]]
 
 
 
@@ -71,6 +66,11 @@ Rule collect-declared-vars[[ 'fun' Id '(' Params ')' '{' Stmt* '}' ]] = bind(id[
         )
     )
 )
+
+Rule collect-declared-vars[[ '{' Stmt* '}' ]] = collect-declared-vars[[ Stmt* ]] 
+Rule collect-declared-vars[[ 'if' '(' Exp ')' Block ]] = collect-declared-vars[[ Block ]]
+Rule collect-declared-vars[[ 'if' '(' Exp ')' Block1 'else' Block2 ]] = collect-declared-vars[[ Block1 ]], collect-declared-vars[[ Block2 ]]
+Rule collect-declared-vars[[ 'while' '(' Exp ')' Block ]] = collect-declared-vars[[ Block ]]
 
 Rule collect-declared-vars[[ ]] = map()
 Rule collect-declared-vars[[ Stmt ]] = map()

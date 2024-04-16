@@ -20,36 +20,32 @@ initialise-binding scope
                sequential
                  (if-else
                     (is-less-or-equal
-                       (assigned
-                          (bound
-                             ("n")),
+                       (assigned bound
+                          "n",
                         decimal-natural
                           ("1")),
                      scope
                        (collateral
                           (map
                              ( )),
-                        return assigned
-                          (bound
-                             ("n"))),
+                        return assigned bound
+                          "n"),
                      null),
                   return int-add
                     (handle-return apply
                        (bound "fib",
                         list
                           (integer-subtract
-                             (assigned
-                                (bound
-                                   ("n")),
+                             (assigned bound
+                                "n",
                               decimal-natural
                                 ("1")))),
                      handle-return apply
                        (bound "fib",
                         list
                           (integer-subtract
-                             (assigned
-                                (bound
-                                   ("n")),
+                             (assigned bound
+                                "n",
                               decimal-natural
                                 ("2"))))))))),
       bind
@@ -60,16 +56,15 @@ initialise-binding scope
         ( )),
    sequential
      (null,
-      assign
+      initialise-variable
         (bound "n",
          0),
       while
         (is-less
-           (assigned
-              (bound
-                 ("n")),
+           (assigned bound
+              "n",
             decimal-natural
-              ("5")),
+              ("8")),
          scope
            (collateral
               (map
@@ -79,17 +74,18 @@ initialise-binding scope
                map
                  ( )),
             sequential
-              (print handle-return apply
-                 (bound "fib",
-                  list
-                    (assigned
-                       (bound
-                          ("n")))),
+              (print
+                 (to-string handle-return apply
+                    (bound "fib",
+                     list
+                       (assigned bound
+                          "n")),
+                  "
+"),
                assign
                  (bound "n",
                   int-add
-                    (assigned
-                       (bound
-                          ("n")),
+                    (assigned bound
+                       "n",
                      decimal-natural
                        ("1"))))))))
