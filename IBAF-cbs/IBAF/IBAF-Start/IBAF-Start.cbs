@@ -2,7 +2,7 @@ Language "IBAFlang"
     
 Syntax START:start ::= statement*
 Semantics start[[ _:start ]] : =>null-type
-Rule start[[ Stmt* ]] = initialise-binding scope(collateral(collect-declared-vars[[ Stmt* ]]), execute[[ Stmt* ]])
+Rule start[[ Stmt* ]] = initialise-binding execute-block[[ Stmt* ]]
 
 
 

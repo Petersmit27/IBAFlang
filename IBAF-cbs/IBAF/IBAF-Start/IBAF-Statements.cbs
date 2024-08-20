@@ -17,8 +17,8 @@ Syntax Stmt: statement ::= block
 
 Syntax Params: params ::= id (',' params)?
 
-Semantics execute[[ Stmt*:statement* ]] : =>null-type
 
+Semantics execute[[ Stmt*:statement* ]] : =>null-type
 Rule execute[[ Block ]] = execute-block[[ Block ]]
 Rule execute[[ 'print' Exp ';' ]] = print(to-string eval-exp[[ Exp ]], "\n")
 Rule execute[[ 'int' Id ';' ]] = initialise-variable(bound id[[ Id ]], 0)
@@ -35,9 +35,7 @@ Rule execute[[ ]] = null
 Rule execute[[ Stmt Stmt+ ]] = sequential(execute[[ Stmt ]], execute[[ Stmt+ ]])
 
 Semantics execute-block[[ _:block ]] : =>null-type
-Rule execute-block[[ '{' Stmt* '}' ]] = execute[[ Stmt* ]]
-
-
+Rule execute-block[[ '{' Stmt* '}' ]] = scope(collateral(collect-declared-vars[[ Stmt* ]]), execute[[ Stmt* ]])
 
 
 
@@ -55,7 +53,6 @@ Rule collect-params[[ Id ',' Params ]] = collect-params[[ Id ]], give(checked ta
 # Handling variable declarations
 
 Semantics collect-declared-vars[[ Stmt*:statement* ]] : (=>environments)+
-
 Rule collect-declared-vars[[ 'int' Id '=' Exp ';' ]] = bind(id[[ Id ]], allocate-variable(integers))
 Rule collect-declared-vars[[ 'int' Id ';' ]] = bind(id[[ Id ]], allocate-variable(integers))
 Rule collect-declared-vars[[ 'fun' Id '(' Params ')' '{' Stmt* '}' ]] = bind(id[[ Id ]], 
@@ -67,23 +64,6 @@ Rule collect-declared-vars[[ 'fun' Id '(' Params ')' '{' Stmt* '}' ]] = bind(id[
     )
 )
 
-Rule collect-declared-vars[[ '{' Stmt* '}' ]] = collect-declared-vars[[ Stmt* ]] 
-Rule collect-declared-vars[[ 'if' '(' Exp ')' Block ]] = collect-declared-vars[[ Block ]]
-Rule collect-declared-vars[[ 'if' '(' Exp ')' Block1 'else' Block2 ]] = collect-declared-vars[[ Block1 ]], collect-declared-vars[[ Block2 ]]
-Rule collect-declared-vars[[ 'while' '(' Exp ')' Block ]] = collect-declared-vars[[ Block ]]
-
 Rule collect-declared-vars[[ ]] = map()
 Rule collect-declared-vars[[ Stmt ]] = map()
 Rule collect-declared-vars[[ Stmt1 Stmt2 Stmt* ]] = collect-declared-vars[[ Stmt1 ]], collect-declared-vars[[ Stmt2 ]], collect-declared-vars[[ Stmt* ]]
-
-
-
-
-
-
-
-
-
-
-
-

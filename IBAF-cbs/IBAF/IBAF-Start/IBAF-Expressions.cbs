@@ -74,29 +74,3 @@ Lexis Dec:decimal ::= '1'-'9'('0'-'9')*
 
 Semantics dec-val[[ _:decimal ]] : ints
 Rule dec-val[[ Dec ]] = decimal-natural(\"Dec\")
-
-
-
-
-
-//Semantics eval-exp[[ _:exp ]] : => values
-//
-//Rule eval-exp[[ Id ]] = assigned bound id[[ Id ]]
-//
-//Rule eval-exp[[ Int ]] = int-val[[ Int ]]
-//
-//Rule eval-exp[[ Exp1 '+' Exp2 ]] = 
-//    int-add(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
-//    
-//Rule eval-exp[[ Exp1 '/' Exp2 ]] = 
-//    checked int-div(eval-exp[[ Exp1 ]], eval-exp[[ Exp2 ]])
-//
-//Rule eval-exp[[ Id '(' ParamValues? ')' ]] = 
-//    handle-return apply(bound id[[ Id ]], eval-params[[ ParamValues? ]])
-//    
-//Rule eval-exp[[ '(' Exp ')' ]] = eval-exp[[ Exp ]]
-
-
-
-
-
