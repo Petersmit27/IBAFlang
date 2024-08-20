@@ -35,7 +35,7 @@ Rule execute[[ ]] = null
 Rule execute[[ Stmt Stmt+ ]] = sequential(execute[[ Stmt ]], execute[[ Stmt+ ]])
 
 Semantics execute-block[[ _:block ]] : =>null-type
-Rule execute-block[[ '{' Stmt* '}' ]] = scope(collateral(collect-declared-vars[[ Stmt* ]]), execute[[ Stmt* ]])
+Rule execute-block[[ '{' Stmt* '}' ]] = execute[[ Stmt* ]]
 
 
 
@@ -63,6 +63,11 @@ Rule collect-declared-vars[[ 'fun' Id '(' Params ')' '{' Stmt* '}' ]] = bind(id[
         )
     )
 )
+
+Rule collect-declared-vars[[ '{' Stmt* '}' ]] = collect-declared-vars[[ Stmt* ]]
+Rule collect-declared-vars[[ 'if' '(' Exp ')' Block ]] = collect-declared-vars[[ Block ]]
+Rule collect-declared-vars[[ 'if' '(' Exp ')' Block1 'else' Block2 ]] = collect-declared-vars[[ Block1 ]], collect-declared-vars[[ Block2 ]]
+Rule collect-declared-vars[[ 'while' '(' Exp ')' Block ]] = collect-declared-vars[[ Block ]]
 
 Rule collect-declared-vars[[ ]] = map()
 Rule collect-declared-vars[[ Stmt ]] = map()
